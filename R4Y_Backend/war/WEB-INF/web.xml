@@ -29,6 +29,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<jsp-file>post.jsp</jsp-file>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>Wami</servlet-name>
+		<jsp-file>wami.jsp</jsp-file>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>Upload</servlet-name>
 		<url-pattern>/upload</url-pattern>
@@ -53,4 +58,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>Post</servlet-name>
 		<url-pattern>/post</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Wami</servlet-name>
+		<url-pattern>/recorder</url-pattern>
+	</servlet-mapping>
+	
 </web-app>
