@@ -1,3 +1,9 @@
+/*
+ * Delete a text file, together with all the attached video files
+ * @author: Yan Zou
+ */
+
+
 package api;
 
 import java.io.IOException;

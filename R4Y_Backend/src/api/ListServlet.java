@@ -1,3 +1,8 @@
+/*
+ * Main page - List of text files that user has uploaded for audio request
+ * @author: Yan Zou
+ */
+
 package api;
 
 import java.io.IOException;
@@ -13,7 +18,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.EntityNotFoundException;
+//import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -32,27 +37,32 @@ public class ListServlet extends HttpServlet {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		
-		String head = "<html>\n<head>\n<title>Read4You</title>\n</head>\n<body>";
-		String navBar = "";
-		String uplForm = "";
-		String uplResult = "";
-		String fileList = "";
-		String bottom = "</body></html>";
+		//the following strings are used to construct an html webpage
+		String head = "<html>\n<head>\n<title>Read4You</title>\n</head>\n<body>\n" +
+				"<center>\n<div id=\"wrapper\"" +
+				" style=\"width:600px;text-align:left;\">";
+		String navBar = "";		//user control panel
+		String uplForm = "";	//post new text files
+		String uplResult = "";	//not used
+		String fileList = "";	//the table of text files
+		String bottom = "</div>\n</center>\n</body>\n</html>";
 		
 		if (user != null) {
 			
 			navBar = "<p>Current user: " + user.getNickname() + "&nbsp;&nbsp;<a href=\"" +
 					userService.createLogoutURL("/") + "\">sign out</a></p>";
-
+			uplForm = "<p><a href=\"/post\">Post New Text File</a></p>";
+			/*
 			uplForm = "<form action=\"" + blobstore.createUploadUrl("/upload") +
 					"\" method=\"post\" enctype=\"multipart/form-data\">" +
 					"<label for=\"textFile\">" +
 					"Upload new text files here:" +
 					"</label>" +
 					"<input type=\"file\" name=\"textFile\" />" +
+					"<input type=\"text\" name=\"tag\" />" +
 					"<input type=\"submit\" value=\"Submit\" />" +
 					"</form>";
-			
+			*/
 			String uploadResult = req.getParameter("ur");
 			if (uploadResult != null) {
 				if (uploadResult.compareTo("1") == 0) {
@@ -64,7 +74,9 @@ public class ListServlet extends HttpServlet {
 				}
 			}
 			
-			fileList = "<ul>\n";
+			fileList = "<table width=600>\n<tr>\n<td width=200>File Name</td>\n" +
+					"<td width=150>Category</td>\n<td width=150>Request Type</td>\n" +
+					"<td width=50>Audio</td>\n<td width=50></td>\n</tr>";
 			Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
 			/*
 			try {
@@ -75,15 +87,25 @@ public class ListServlet extends HttpServlet {
 				datastore.put(new Entity(rootKey));
 			}*/
 			
-			Query fileQuery = new Query("TextFile");
-			fileQuery.setAncestor(rootKey);
-			List<Entity> results = datastore.prepare(fileQuery).asList(
-					FetchOptions.Builder.withDefaults());
-			for (Entity fileInfo : results) {
-				fileList += "<li><a href=\"/serve?bk=" + fileInfo.getKey().getName() +
-						"\">" + fileInfo.getKey().getName() + "</a>&nbsp;&nbsp;&nbsp;&nbsp;" +
+			/******************************************
+			 * Construct the table of text files
+			 ******************************************/
+			
+			Query fileQuery = new Query("TextFile");	//query all the text files
+			fileQuery.setAncestor(rootKey);				//under the user root
+			FetchOptions fetchOp = FetchOptions.Builder.withDefaults();
+			List<Entity> results = datastore.prepare(fileQuery).asList(fetchOp);
+			for (Entity fileInfo : results) {			//for each file, generate an entry
+				Query audioQuery = new Query("AudioFile");
+				audioQuery.setAncestor(fileInfo.getKey());
+				int numAudio = datastore.prepare(audioQuery).countEntities(fetchOp);
+				fileList += "<tr>\n<td><a href=\"/serve?bk=" + fileInfo.getKey().getName() +
+						"\">" + fileInfo.getProperty("filename") + "</a></td>\n<td>" +
+						fileInfo.getProperty("category") + "</td>\n<td>" +
+						fileInfo.getProperty("req_type") + "</td>\n<td>" +
+						numAudio + "</td>\n<td>" +
 						"<a href=\"delete?bk=" + fileInfo.getKey().getName() + "\">" +
-						"delete</a></li>\n";
+						"delete</a></td>\n</tr>\n";
 			}
 			fileList += "</ul>";
 		} else {
@@ -96,6 +118,7 @@ public class ListServlet extends HttpServlet {
 		out.println(head);
 		out.println(navBar);
 		out.println(uplForm);
+		out.println(uplResult);
 		out.println(fileList);
 		out.println(bottom);
 	}
