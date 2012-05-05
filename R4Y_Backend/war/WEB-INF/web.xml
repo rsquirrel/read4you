@@ -23,6 +23,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>List</servlet-name>
 		<servlet-class>api.ListServlet</servlet-class>
 	</servlet>
+  
+	<servlet>
+		<servlet-name>Post</servlet-name>
+		<jsp-file>post.jsp</jsp-file>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>Upload</servlet-name>
@@ -42,5 +47,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>List</servlet-name>
 		<url-pattern>/list</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Post</servlet-name>
+		<url-pattern>/post</url-pattern>
 	</servlet-mapping>
 </web-app>
