@@ -16,7 +16,7 @@
 
 <%
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-	String url = blobstoreService.createUploadUrl("/upload"); 
+	String url = blobstoreService.createUploadUrl("/read"); 
 %>
 
 <script>
@@ -30,8 +30,9 @@
 	function setupGUI() {
 		var gui = new Wami.GUI({
 			id : "wami",
-			recordUrl : "<%= url %>",
-			playUrl : "<%= url %>"
+			recordUrl : <%= "\"" + url + "\""%>,
+			playUrl : <%= "\"" + url + "\"" %>,
+			//singleButton : "yes"
 		});
 
 		gui.setPlayEnabled(false);
