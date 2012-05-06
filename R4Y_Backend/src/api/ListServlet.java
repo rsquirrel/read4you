@@ -31,25 +31,24 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class ListServlet extends HttpServlet {
     private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     private BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
-    
-    static public String HEAD = "<html>\n<HEAD>\n<title>Read4You</title>\n</HEAD>\n<body>\n" 
-    		+ "\n<div id=\"wrapper\" align=center>"
-			+ "\n<p >"
-			+ (UserServiceFactory.getUserService().getCurrentUser() == null
-					? ("Welcome to Read4You! <a href=\"" 
-							+ UserServiceFactory.getUserService().createLoginURL("/list") + "\">Sign in or register</a> to start.")
-					: ("Hi, " + UserServiceFactory.getUserService().getCurrentUser().getNickname() 
-							+ "<span style=\"padding-left:15px\"><a href=\"/list\">Main </a></span>"
-							+ "<span style=\"padding-left:15px\"><a href=\"" 
-								+ UserServiceFactory.getUserService().createLogoutURL("/list") + "\">Log Out</a></span>"
-							+ "</p>"));
-			//+ " style=\"width:600px;text-align:left;\">";
-    static public String BOTTOM = "</div>\n</body>\n</html>";
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
+		
+		String head = "<html>\n<head>\n<title>Read4You</title>\n</head>\n<body>\n" 
+	    		+ "\n<div id=\"wrapper\" align=center>"
+				+ "\n<p >"
+				+ (UserServiceFactory.getUserService().getCurrentUser() == null
+						? ("Welcome to Read4You! <a href=\"" 
+								+ UserServiceFactory.getUserService().createLoginURL("/list") + "\">Sign in or register</a> to start.")
+						: ("Hi, " + UserServiceFactory.getUserService().getCurrentUser().getNickname() 
+								+ "<span style=\"padding-left:15px\"><a href=\"/list\">Main </a></span>"
+								+ "<span style=\"padding-left:15px\"><a href=\"" 
+									+ UserServiceFactory.getUserService().createLogoutURL("/") + "\">Log Out</a></span>"
+								+ "</p>"));
+		String bottom = "</div>\n</body>\n</html>";
 		
 		//the following strings are used to construct an html webpage
 		String uplForm = "";	//post new text files
@@ -121,10 +120,10 @@ public class ListServlet extends HttpServlet {
 		
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
-		out.println(HEAD);
+		out.println(head);
 		out.println(uplForm);
 		out.println(uplResult);
 		out.println(fileList);
-		out.println(BOTTOM);
+		out.println(bottom);
 	}
 }
