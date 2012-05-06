@@ -39,8 +39,8 @@ public class ListServlet extends HttpServlet {
 		
 		//the following strings are used to construct an html webpage
 		String head = "<html>\n<head>\n<title>Read4You</title>\n</head>\n<body>\n" +
-				"<center>\n<div id=\"wrapper\"" +
-				" style=\"width:600px;text-align:left;\">";
+				"<center>\n<div id=\"wrapper\" align=center>";// +
+				//" style=\"width:600px;text-align:left;\">";
 		String navBar = "";		//user control panel
 		String uplForm = "";	//post new text files
 		String uplResult = "";	//not used
@@ -49,9 +49,11 @@ public class ListServlet extends HttpServlet {
 		
 		if (user != null) {
 			
-			navBar = "<p>Current user: " + user.getNickname() + "&nbsp;&nbsp;<a href=\"" +
+			navBar = "<p style=\"width:600px;text-align:left;\">Current user: " +
+					user.getNickname() + "&nbsp;&nbsp;<a href=\"" +
 					userService.createLogoutURL("/") + "\">sign out</a></p>";
-			uplForm = "<p><a href=\"/post\">Post New Text File</a></p>";
+			uplForm = "<p style=\"width:600px;text-align:left;\">" +
+					"<a href=\"/post\">Post New Text File</a></p>";
 			/*
 			uplForm = "<form action=\"" + blobstore.createUploadUrl("/upload") +
 					"\" method=\"post\" enctype=\"multipart/form-data\">" +
@@ -74,9 +76,10 @@ public class ListServlet extends HttpServlet {
 				}
 			}
 			
-			fileList = "<table width=600>\n<tr>\n<td width=200>File Name</td>\n" +
-					"<td width=150>Category</td>\n<td width=150>Request Type</td>\n" +
-					"<td width=50>Audio</td>\n<td width=50></td>\n</tr>";
+			fileList = "<table>\n<col width=200><col width=150><col width=150>" +
+					"<col width=50><col width=50>\n<tr>\n<td>File Name</td>\n" +
+					"<td>Category</td>\n<td>Request Type</td>\n" +
+					"<td>Audio</td>\n<td></td>\n</tr>";
 			Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
 			/*
 			try {
@@ -107,7 +110,7 @@ public class ListServlet extends HttpServlet {
 						"<a href=\"delete?bk=" + fileInfo.getKey().getName() + "\">" +
 						"delete</a></td>\n</tr>\n";
 			}
-			fileList += "</ul>";
+			fileList += "</table>";
 		} else {
 			navBar = "<p>Welcome to Read4You! <a href=\"" + userService.createLoginURL("/") +
 					"\">Sign in or register</a> to start.</p>";

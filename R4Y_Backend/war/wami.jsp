@@ -30,8 +30,8 @@
 	function setupGUI() {
 		var gui = new Wami.GUI({
 			id : "wami",
-			recordUrl : <%= "\"" + url + "\""%>,
-			playUrl : <%= "\"" + url + "\"" %>,
+			recordUrl : <%= "\"/wave\""%>,
+			//playUrl : 
 			//singleButton : "yes"
 		});
 
