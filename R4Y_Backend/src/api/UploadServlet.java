@@ -32,6 +32,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class UploadServlet extends HttpServlet {
     private BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
     private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    private UserService userService = UserServiceFactory.getUserService();
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
@@ -43,12 +44,15 @@ public class UploadServlet extends HttpServlet {
 	        BlobKey blobKey = blobs.get("text_file").get(0);	
 	        //System.out.println("blobs: " + blobs.toString());
 	        
-	        UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();
 			if (user != null) {		//record all the file info into user root entity
 				Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
-				datastore.put(new Entity(rootKey));	//create the root entity in case there isn't
-				
+		    	try {
+		    		datastore.get(rootKey);
+		    	} catch (EntityNotFoundException e) {
+		    		//create the root entity in case there isn't
+		    		datastore.put(new Entity(rootKey));
+		    	}
 				String filename = req.getParameter("file_name");
 				String reqType = req.getParameter("req_type");
 				String category = req.getParameter("category");
