@@ -176,8 +176,8 @@ Wami.setup = function(options) {
 				+ " or greater<br />https://get.adobe.com/flashplayer/";
 
 		// This is the minimum size due to the microphone security panel
-		Wami.swfobject.embedSWF(_options.swfUrl, id, 214, 137, version, null,
-				flashVars, params);
+		Wami.swfobject.embedSWF(_options.swfUrl, id, 1, 1, version, null,
+				flashVars, params);	//214*137
 
 		// Without this line, Firefox has a dotted outline of the flash
 		Wami.swfobject.createCSS("#" + id, "outline:none");
