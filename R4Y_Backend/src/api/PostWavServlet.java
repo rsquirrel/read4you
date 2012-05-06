@@ -46,7 +46,7 @@ public class PostWavServlet extends HttpServlet {
 							rootEntity.setProperty("last_audio", null);
 							datastore.put(rootEntity);
 							
-							String resType = req.getParameter("res_type");
+							String usage = req.getParameter("usage");
 							String uploaderID = req.getParameter("uploader");
 	
 							//System.out.println(audioBlobKey);
@@ -56,7 +56,7 @@ public class PostWavServlet extends HttpServlet {
 							
 							Entity audioEntity = new Entity("AudioFile", audioBlobKey, textKey);
 							//the third level UserRoot->TextFile->AudioFile
-							audioEntity.setProperty("res_type", resType);
+							audioEntity.setProperty("usage", usage);
 							audioEntity.setProperty("uploader", uploaderID);
 							datastore.put(audioEntity);
 							

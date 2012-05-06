@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class WaveServlet extends HttpServlet {
     	User user = userService.getCurrentUser();
     	if (user != null) {	//we don't allow a wave file to be uploaded without a user login
 	    	resp.getWriter().println(req.getParameterMap().toString());
-	    	InputStream istream = req.getInputStream();	//read the wave file
+	    	BufferedReader reader = req.getReader();	//read the wave file
 	    	
 	    	// Get a file service
 	    	FileService fileService = FileServiceFactory.getFileService();
@@ -57,13 +58,16 @@ public class WaveServlet extends HttpServlet {
 	    	// Open a channel to write to it
 	    	boolean lock = true;	// This time lock because we intend to finalize
 	    	FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);
-	    	OutputStream ostream = Channels.newOutputStream(writeChannel);
+	    	//OutputStream ostream = Channels.newOutputStream(writeChannel);
 	    	
-	    	//read the wave file and write it into blob file
+	    	//read the wave file
+	    	StringBuilder sb = new StringBuilder();
 	    	int i;
-	    	while ((i = istream.read()) != -1) {
-	    		ostream.write(i);
+	    	while ((i = reader.read()) != -1) {
+	    		sb.append((char)i);
 	    	}
+	    	//write the file into blob file
+	    	writeChannel.write(ByteBuffer.wrap(sb.toString().getBytes()));
 	    	writeChannel.closeFinally();
 	    	
 	    	BlobKey blobKey = fileService.getBlobKey(file);

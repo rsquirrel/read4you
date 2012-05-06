@@ -35,12 +35,12 @@ Wami.GUI = function(options) {
 
 	function setupDOM() {
 		var guidiv = createDiv(null,
-				"width: 70px; height: 70px;");
+				"width: 56px; height: 63px;");	//yan - adjust the position
 		document.getElementById(options.id).appendChild(guidiv);
 
 		var rid = Wami.createID();
 		var recordDiv = createDiv(rid,
-				"left: 0px; top: 0px");
+				"left: 0px; top: 0px");	//yan - adjust the position
 		guidiv.appendChild(recordDiv);
 
 		recordButton = new Button(rid, RECORD_BUTTON, options.buttonUrl);
@@ -51,7 +51,7 @@ Wami.GUI = function(options) {
 
 		if (!options.singleButton) {
 			var pid = Wami.createID();
-			var playDiv = createDiv(pid,
+			var playDiv = createDiv(pid,	//yan - adjust the position
 					"width: 0px; height: 0px; visibility: hidden;");
 			guidiv.appendChild(playDiv);
 
@@ -70,7 +70,7 @@ Wami.GUI = function(options) {
 		}
 		recordButton.setActivity(0);
 		playButton.setEnabled(false);
-		//document.getElementById("submit").setEnabled(false);
+		document.getElementById("submit").disabled = true;
 		Wami.startRecording(options.recordUrl,
 				Wami.nameCallback(onRecordStart), Wami
 						.nameCallback(onRecordFinish), Wami
@@ -81,7 +81,7 @@ Wami.GUI = function(options) {
 		Wami.stopRecording();
 		clearInterval(recordInterval);
 		recordButton.setEnabled(true);
-		//document.getElementById("submit").setEnabled(true);
+		document.getElementById("submit").disabled = false;
 	}
 
 	function startPlaying() {

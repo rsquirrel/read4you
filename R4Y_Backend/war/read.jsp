@@ -2,9 +2,6 @@
 <html>
 <head>
 
-<script type="text/javascript" src="http://mediaplayer.yahoo.com/js"></script>
-<script type="text/javascript" src="http://webplayer.yahooapis.com/player.js"></script> 
-
 <!-- swfobject is a commonly used library to embed Flash content -->
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
@@ -82,13 +79,12 @@
 				//+ "<ul>\n";
 		for (Entity e: results)
 		{
-			String usage = e.getProperty("res_type").toString();
 			// <p><a href="song.mp3">Play Song</a></p>
-			wavlist += "<p><a href=\"/serve?bk=" + e.getKey().getName() + "\">" + usage + "</a></p>\n";
+			wavlist += "<p><a href=\"/serve?bk=" + e.getKey().getName() + "\" type=\"audio/ogg\">" +
+					e.getProperty("usage") + " (by " + e.getProperty("uploader") + ")</a></p>\n";
 			
 		}
-		// wavlist += "</ul>\n";
-		
+		wavlist += "<p><a href=\"http://mediaplayer.yahoo.com/example3.mp3\">yahoo</a></p>\n";
 	}
 %>
 
@@ -121,22 +117,44 @@
 	<%} else {%>
 	<table border=1>
 		<tr>
-			<td><%= iframe %></td>
-			<td><%= wavlist %></td>
+			<td rowspan=2><%= iframe %></td>
+			<td>
+				<form action="/postwav" method="post">
+					<table>
+						<tr>
+							<td rowspan=2 style="padding-left:30px; padding-top:40px; padding-bottom:40px;">
+								<div id="wami" style="position:relative;"></div>
+								<noscript>WAMI requires Javascript</noscript>
+							</td>
+							<td style="padding-top:40px; padding-right:30px;">
+								<select name="usage">
+									<option>Read</option>
+									<option>Comment</option>
+									<option>Explain</option>
+									<option>Translate</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td style="padding-bottom:40px; padding-right:30px;">
+								<input type="hidden" name="text_file" value="<%=
+									(textKey != null)?KeyFactory.keyToString(textKey):"null" %>" />
+								<input type="hidden" name="uploader" value="<%= user.getNickname() %>" />
+								<input id="submit" type="submit" name="submit" />
+							</td>
+						</tr>
+					</table>
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td style="vertical-align:top; width:220px"><%= wavlist %></td>
 		</tr>
 	</table>
-	
-	
-	
-	<form action="/postwav" method="post">
-		<div id="wami"></div>
-		<noscript>WAMI requires Javascript</noscript>
-		<input type="text" name="res_type" />
-		<input type="hidden" name="text_file" value="<%= (textKey != null)?KeyFactory.keyToString(textKey):"null" %>" />
-		<input type="hidden" name="uploader" value="<%= user.getUserId() %>" />
-		<br /><input id="submit" type="submit" name="submit" />
-	</form>
 	<%} %>
 </div>
+
+<script type="text/javascript" src="http://webplayer.yahooapis.com/player.js"></script> 
+
 </body>
 </html>

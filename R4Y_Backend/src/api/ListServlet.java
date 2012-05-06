@@ -46,7 +46,7 @@ public class ListServlet extends HttpServlet {
 						: ("Hi, " + UserServiceFactory.getUserService().getCurrentUser().getNickname() 
 								+ "<span style=\"padding-left:15px\"><a href=\"/list\">Main </a></span>"
 								+ "<span style=\"padding-left:15px\"><a href=\"" 
-									+ UserServiceFactory.getUserService().createLogoutURL("/") + "\">Log Out</a></span>"
+									+ UserServiceFactory.getUserService().createLogoutURL("/list") + "\">Log Out</a></span>"
 								+ "</p>"));
 		String bottom = "</div>\n</body>\n</html>";
 		
@@ -58,7 +58,7 @@ public class ListServlet extends HttpServlet {
 		if (user != null) {
 			
 			uplForm = "<p style=\"width:600px;text-align:left;\">" +
-					"<a href=\"/post\">Post New Text File</a></p>";
+					"<a href=\"/posttext\">Post New Text File</a></p>";
 			/*
 			uplForm = "<form action=\"" + blobstore.createUploadUrl("/upload") +
 					"\" method=\"post\" enctype=\"multipart/form-data\">" +
