@@ -28,11 +28,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>PostText</servlet-name>
 		<jsp-file>post.jsp</jsp-file>
 	</servlet>
-	
-	<servlet>
-		<servlet-name>Wami</servlet-name>
-		<jsp-file>wami.jsp</jsp-file>
-	</servlet>
   
 	<servlet>
 		<servlet-name>PostWav</servlet-name>
@@ -41,7 +36,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<servlet>
 		<servlet-name>Read</servlet-name>
-		<servlet-class>api.ReadServlet</servlet-class>
+		<jsp-file>read.jsp</jsp-file>
 	</servlet>
 	
 	<servlet>
@@ -82,11 +77,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>PostWav</servlet-name>
 		<url-pattern>/postwav</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>Wami</servlet-name>
-		<url-pattern>/record</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
