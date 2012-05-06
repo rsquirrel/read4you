@@ -81,7 +81,7 @@ Wami.setup = function(options) {
 	function setOptions(options) {
 		// Start with default options
 		_options = {
-			swfUrl : "Wami.swf",
+			swfUrl : "/wami/Wami.swf",
 			onReady : function() {
 				Wami.hide();
 			},

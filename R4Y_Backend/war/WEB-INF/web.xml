@@ -34,6 +34,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<jsp-file>wami.jsp</jsp-file>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>Read</servlet-name>
+		<servlet-class>api.ReadServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>AssociateInfo</servlet-name>
+		<servlet-class>api.AssociateInfoServlet</servlet-class>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>Upload</servlet-name>
 		<url-pattern>/upload</url-pattern>
@@ -61,7 +71,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<servlet-mapping>
 		<servlet-name>Wami</servlet-name>
-		<url-pattern>/recorder</url-pattern>
+		<url-pattern>/record</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Read</servlet-name>
+		<url-pattern>/read</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>AssociateInfo</servlet-name>
+		<url-pattern>/associate</url-pattern>
 	</servlet-mapping>
 	
 </web-app>
