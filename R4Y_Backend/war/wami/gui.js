@@ -52,7 +52,7 @@ Wami.GUI = function(options) {
 		if (!options.singleButton) {
 			var pid = Wami.createID();
 			var playDiv = createDiv(pid,
-					"position: absolute; right: 40px; top: 25px");
+					"position: absolute; right: 40px; top: 25px; visibility: hidden;");
 			guidiv.appendChild(playDiv);
 
 			playButton = new Button(pid, PLAY_BUTTON, options.buttonUrl);
