@@ -1,6 +1,5 @@
 /*
- * The page after uploading the text file
- * Record all the file information into datastore
+ * Save the wav in blobstore
  * @author: Yan Zou
  */
 
@@ -10,6 +9,9 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.channels.Channels;
 import java.util.List;
 import java.util.Map;
 
@@ -27,73 +29,53 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.files.AppEngineFile;
+import com.google.appengine.api.files.FileService;
+import com.google.appengine.api.files.FileServiceFactory;
+import com.google.appengine.api.files.FileWriteChannel;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 @SuppressWarnings("serial")
 public class WaveServlet extends HttpServlet {
-    private BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
+    //private BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
     private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    private UserService userService = UserServiceFactory.getUserService();
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
-/*
-        Map<String, List<BlobKey>> blobs = blobstore.getUploads(req);
-        //System.out.println(blobs.toString());
-        if (blobs != null && blobs.get("text_file") != null) {	//if text_file ever exists
-        	//avoid exception when user directly click submit without specifying any files
-	        BlobKey blobKey = blobs.get("text_file").get(0);	
-	        //System.out.println("blobs: " + blobs.toString());
-	        
-	        UserService userService = UserServiceFactory.getUserService();
-			User user = userService.getCurrentUser();
-			if (user != null) {		//record all the file info into user root entity
-				Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
-				datastore.put(new Entity(rootKey));	//create the root entity in case there isn't
-				
-				String filename = req.getParameter("file_name");
-				String reqType = req.getParameter("req_type");
-				String category = req.getParameter("category");
-				//if the filename is not specified, use the original filename
-				if (filename == null || filename.compareTo("") == 0) {
-					try {
-						Key blobinfoKey = KeyFactory.createKey("__BlobInfo__",
-								blobKey.getKeyString());	//get original filename
-						Entity blobInfo = datastore.get(blobinfoKey);
-						filename = blobInfo.getProperty("filename").toString();
-						//System.out.println("filename: " + filename);
-					} catch (EntityNotFoundException e) {
-						// TODO Auto-generated catch block
-						//e.printStackTrace();
-					}
-				}
-				//create a new file info entity as a child of the user root
-				Entity fileInfo = new Entity("TextFile", blobKey.getKeyString(), rootKey);
-				fileInfo.setProperty("filename", filename);
-				fileInfo.setProperty("req_type", reqType);
-				fileInfo.setProperty("category", category);
-				datastore.put(fileInfo);
-			}
-        }
-		*/
-		//resp.sendRedirect("/list");
-    	resp.getWriter().println(req.getParameterMap().toString());
-    	System.out.println(req.getAttributeNames());
-    	System.out.println(req.getParameterNames());
-    	BufferedReader reader = req.getReader();
-    	int i;
-    	while ((i = reader.read()) != -1) {
-    		System.out.print((char)i);
+    	User user = userService.getCurrentUser();
+    	if (user != null) {	//we don't allow a wave file to be uploaded without a user login
+	    	resp.getWriter().println(req.getParameterMap().toString());
+	    	InputStream istream = req.getInputStream();	//read the wave file
+	    	
+	    	// Get a file service
+	    	FileService fileService = FileServiceFactory.getFileService();
+	    	// Create a new Blob file with mime-type "audio/wav"
+	    	AppEngineFile file = fileService.createNewBlobFile("audio/wav");
+	    	// Open a channel to write to it
+	    	boolean lock = true;	// This time lock because we intend to finalize
+	    	FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);
+	    	OutputStream ostream = Channels.newOutputStream(writeChannel);
+	    	
+	    	//read the wave file and write it into blob file
+	    	int i;
+	    	while ((i = istream.read()) != -1) {
+	    		ostream.write(i);
+	    	}
+	    	writeChannel.closeFinally();
+	    	
+	    	BlobKey blobKey = fileService.getBlobKey(file);
+	    	Key k = KeyFactory.createKey("UserRoot", user.getUserId());
+	    	Entity userRoot;
+	    	try {
+	    		userRoot = datastore.get(k);
+	    	} catch (EntityNotFoundException e) {
+	    		userRoot = new Entity(k);
+	    	}
+	    	userRoot.setProperty("last_audio", blobKey.getKeyString());
+	    	datastore.put(userRoot);
     	}
-    	
-    	System.out.println();
-    	
-/*
-        if (blobKey == null) {
-            res.sendRedirect("/");
-        } else {
-            res.sendRedirect("/serve?blob-key=" + blobKey.getKeyString());
-        }*/
     }
 }

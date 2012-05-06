@@ -11,12 +11,13 @@
 <!-- GUI code... take it or leave it -->
 <script type="text/javascript" src="/wami/gui.js"></script>
 
-<%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
-<%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
+<%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
+<%@ page import="com.google.appengine.api.users.UserService" %>
+<%@ page import="com.google.appengine.api.users.User" %>
 
 <%
-    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-	String url = blobstoreService.createUploadUrl("/read"); 
+    UserService userService = UserServiceFactory.getUserService();
+	User user = userService.getCurrentUser();
 %>
 
 <script>
@@ -30,7 +31,7 @@
 	function setupGUI() {
 		var gui = new Wami.GUI({
 			id : "wami",
-			recordUrl : <%= "\"/wave\""%>,
+			recordUrl : "/wav",
 			//playUrl : 
 			//singleButton : "yes"
 		});
@@ -43,5 +44,11 @@
 <body onload="setupRecorder()">
 	<div id="wami" style="margin-left: 100px;"></div>
 	<noscript>WAMI requires Javascript</noscript>
+	<form action="/postwav" method="post">
+		<input type="text" name="res_type" />
+		<input type="hidden" name="text_file" value="<%= request.getParameter("fk") %>" />
+		<input type="hidden" name="uploader" value="<%= user.getUserId() %>" />
+		<br /><input type="submit" name="submit" />
+	</form>
 </body>
 </html>
