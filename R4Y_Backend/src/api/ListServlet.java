@@ -31,6 +31,20 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class ListServlet extends HttpServlet {
     private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     private BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
+    
+    static public String HEAD = "<html>\n<HEAD>\n<title>Read4You</title>\n</HEAD>\n<body>\n" 
+    		+ "\n<div id=\"wrapper\" align=center>"
+			+ "\n<p >"
+			+ (UserServiceFactory.getUserService().getCurrentUser() == null
+					? ("Welcome to Read4You! <a href=\"" 
+							+ UserServiceFactory.getUserService().createLoginURL("/list") + "\">Sign in or register</a> to start.")
+					: ("Hi, " + UserServiceFactory.getUserService().getCurrentUser().getNickname() 
+							+ "<span style=\"padding-left:15px\"><a href=\"/list\">Main </a></span>"
+							+ "<span style=\"padding-left:15px\"><a href=\"" 
+								+ UserServiceFactory.getUserService().createLogoutURL("/list") + "\">Log Out</a></span>"
+							+ "</p>"));
+			//+ " style=\"width:600px;text-align:left;\">";
+    static public String BOTTOM = "</div>\n</body>\n</html>";
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
@@ -38,20 +52,12 @@ public class ListServlet extends HttpServlet {
 		User user = userService.getCurrentUser();
 		
 		//the following strings are used to construct an html webpage
-		String head = "<html>\n<head>\n<title>Read4You</title>\n</head>\n<body>\n" +
-				"<center>\n<div id=\"wrapper\" align=center>";// +
-				//" style=\"width:600px;text-align:left;\">";
-		String navBar = "";		//user control panel
 		String uplForm = "";	//post new text files
 		String uplResult = "";	//not used
 		String fileList = "";	//the table of text files
-		String bottom = "</div>\n</center>\n</body>\n</html>";
 		
 		if (user != null) {
 			
-			navBar = "<p style=\"width:600px;text-align:left;\">Current user: " +
-					user.getNickname() + "&nbsp;&nbsp;<a href=\"" +
-					userService.createLogoutURL("/") + "\">sign out</a></p>";
 			uplForm = "<p style=\"width:600px;text-align:left;\">" +
 					"<a href=\"/post\">Post New Text File</a></p>";
 			/*
@@ -102,7 +108,7 @@ public class ListServlet extends HttpServlet {
 				Query audioQuery = new Query("AudioFile");
 				audioQuery.setAncestor(fileInfo.getKey());
 				int numAudio = datastore.prepare(audioQuery).countEntities(fetchOp);
-				fileList += "<tr>\n<td><a href=\"/serve?bk=" + fileInfo.getKey().getName() +
+				fileList += "<tr>\n<td><a href=\"/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
 						"\">" + fileInfo.getProperty("filename") + "</a></td>\n<td>" +
 						fileInfo.getProperty("category") + "</td>\n<td>" +
 						fileInfo.getProperty("req_type") + "</td>\n<td>" +
@@ -111,18 +117,14 @@ public class ListServlet extends HttpServlet {
 						"delete</a></td>\n</tr>\n";
 			}
 			fileList += "</table>";
-		} else {
-			navBar = "<p>Welcome to Read4You! <a href=\"" + userService.createLoginURL("/") +
-					"\">Sign in or register</a> to start.</p>";
 		}
 		
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
-		out.println(head);
-		out.println(navBar);
+		out.println(HEAD);
 		out.println(uplForm);
 		out.println(uplResult);
 		out.println(fileList);
-		out.println(bottom);
+		out.println(BOTTOM);
 	}
 }
