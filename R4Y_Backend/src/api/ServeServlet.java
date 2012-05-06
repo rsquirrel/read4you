@@ -22,6 +22,7 @@ public class ServeServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	    throws IOException {
 	        BlobKey blobKey = new BlobKey(req.getParameter("bk"));
+	        //resp.setContentType("audio/ogg");
 	        blobstore.serve(blobKey, resp);
 	    }
 }

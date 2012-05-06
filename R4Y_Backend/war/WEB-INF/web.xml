@@ -26,7 +26,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   
 	<servlet>
 		<servlet-name>PostText</servlet-name>
-		<jsp-file>post.jsp</jsp-file>
+		<jsp-file>/post.jsp</jsp-file>
 	</servlet>
   
 	<servlet>
@@ -36,7 +36,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<servlet>
 		<servlet-name>Read</servlet-name>
-		<jsp-file>read.jsp</jsp-file>
+		<jsp-file>/read.jsp</jsp-file>
 	</servlet>
 	
 	<servlet>

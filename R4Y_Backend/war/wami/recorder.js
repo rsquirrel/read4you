@@ -81,7 +81,7 @@ Wami.setup = function(options) {
 	function setOptions(options) {
 		// Start with default options
 		_options = {
-			swfUrl : "/wami/Wami.swf",
+			swfUrl : "wami/wami.swf",
 			onReady : function() {
 				Wami.hide();
 			},
@@ -124,7 +124,8 @@ Wami.setup = function(options) {
 		// Create a DIV for the SWF under _options.id
 
 		var container = document.createElement('div');
-		container.style.position = 'absolute';
+		// yan - adjust the position of recorder swf
+		container.style.cssText = 'position: absolute; left: -30px; top: -40px; z-index: -10;';
 		_options.cid = Wami.createID();
 		container.setAttribute('id', _options.cid);
 
@@ -176,7 +177,7 @@ Wami.setup = function(options) {
 				+ " or greater<br />https://get.adobe.com/flashplayer/";
 
 		// This is the minimum size due to the microphone security panel
-		Wami.swfobject.embedSWF(_options.swfUrl, id, 1, 1, version, null,
+		Wami.swfobject.embedSWF(_options.swfUrl, id, 214, 137, version, null,
 				flashVars, params);	//214*137
 
 		// Without this line, Firefox has a dotted outline of the flash
@@ -189,11 +190,13 @@ Wami.setup = function(options) {
 	function checkRemembered(finishedfn) {
 		var id = Wami.createID();
 		var div = document.createElement('div');
-		div.style.top = '-999px';
-		div.style.left = '-999px';
+		div.style.top = '0px';
+		div.style.left = '0px';
 		div.setAttribute('id', id);
 		var body = document.getElementsByTagName('body').item(0);
 		body.appendChild(div);
+		//var wamidiv = document.getElementsById("wami");
+		//wamidiv.appendChild(div);
 
 		var fn = Wami.nameCallback(function() {
 			var swf = document.getElementById(id);
