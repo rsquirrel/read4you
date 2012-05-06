@@ -36,7 +36,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   
 	<servlet>
 		<servlet-name>PostWav</servlet-name>
-		<servlet-class>api.	PostWavServlet</servlet-class>
+		<servlet-class>api.PostWavServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
