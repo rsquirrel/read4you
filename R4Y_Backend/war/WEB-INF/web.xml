@@ -21,7 +21,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   
 	<servlet>
 		<servlet-name>List</servlet-name>
-		<servlet-class>api.ListServlet</servlet-class>
+		<jsp-file>/list.jsp</jsp-file>
+	</servlet>
+  
+	<servlet>
+		<servlet-name>Search</servlet-name>
+		<jsp-file>/search.jsp</jsp-file>
 	</servlet>
   
 	<servlet>
@@ -67,6 +72,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>List</servlet-name>
 		<url-pattern>/list</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Search</servlet-name>
+		<url-pattern>/search</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
