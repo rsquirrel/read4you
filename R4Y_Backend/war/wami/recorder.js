@@ -240,10 +240,12 @@ Wami.setup = function(options) {
 
 			var augmentedfn = Wami.nameCallback(function() {
 				checkRemembered(finishedfn);
-				container.style.cssText = "position: absolute;";
+				container.style.cssText =
+					'position: absolute; left: -30px; top: -40px; z-index: -10;';
 			});
 
-			container.style.cssText = "position: absolute; z-index: 99999";
+			container.style.cssText =
+				'position: absolute; left: -30px; top: -40px; z-index: 99999;';
 
 			recorder.showSecurity(panel, startfn, augmentedfn, failfn);
 		}

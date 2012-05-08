@@ -29,7 +29,14 @@ Text file upload page
 	        		</tr>
 	        		<tr>
 	        			<td><label for="req_type">Request Type:</label></td>
-	        			<td><input type="text" name="req_type" /></td>
+	        			<td>
+							<select name="req_type">
+								<option>Read</option>
+								<option>Comment</option>
+								<option>Explain</option>
+								<option>Translate</option>
+							</select>
+	        			</td>
 	        		</tr>
 	        		<tr>
 	        			<td><label for="text_file">Local File:</label></td>

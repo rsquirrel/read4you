@@ -81,7 +81,6 @@ Wami.GUI = function(options) {
 		Wami.stopRecording();
 		clearInterval(recordInterval);
 		recordButton.setEnabled(true);
-		document.getElementById("submit").disabled = false;
 	}
 
 	function startPlaying() {
@@ -138,6 +137,7 @@ Wami.GUI = function(options) {
 
 	function onRecordFinish() {
 		playButton.setEnabled(true);
+		document.getElementById("submit").disabled = false;
 		if (options.onRecordFinish) {
 			options.onRecordFinish();
 		}

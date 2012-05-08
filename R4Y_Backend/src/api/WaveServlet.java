@@ -5,16 +5,9 @@
 
 package api;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -49,7 +40,10 @@ public class WaveServlet extends HttpServlet {
     	User user = userService.getCurrentUser();
     	if (user != null) {	//we don't allow a wave file to be uploaded without a user login
 	    	resp.getWriter().println(req.getParameterMap().toString());
-	    	BufferedReader reader = req.getReader();	//read the wave file
+	    	//BufferedReader reader = req.getReader();	//read the wave file
+	    	InputStream istream = req.getInputStream();
+	    	byte[] bytes = new byte[req.getContentLength()];
+	    	//istream.read(bytes);
 	    	
 	    	// Get a file service
 	    	FileService fileService = FileServiceFactory.getFileService();
@@ -59,15 +53,25 @@ public class WaveServlet extends HttpServlet {
 	    	boolean lock = true;	// This time lock because we intend to finalize
 	    	FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);
 	    	//OutputStream ostream = Channels.newOutputStream(writeChannel);
+	    	//PrintWriter out = new PrintWriter(Channels.newWriter(writeChannel, "UTF8"));
 	    	
 	    	//read the wave file
-	    	StringBuilder sb = new StringBuilder();
-	    	int i;
-	    	while ((i = reader.read()) != -1) {
-	    		sb.append((char)i);
+	    	//StringBuffer sb = new StringBuffer();
+	    	//StringBuilder sb = new StringBuilder();
+	    	int c;
+	    	int i = 0;
+	    	while ((c = istream.read()) != -1) {
+	    		//sb.append((char)c);
+	    		//ostream.write(c);
+	    		bytes[i] = (byte) c;
+	    		++i;
 	    	}
 	    	//write the file into blob file
-	    	writeChannel.write(ByteBuffer.wrap(sb.toString().getBytes()));
+	    	//System.out.println(sb.toString());
+	    	writeChannel.write(ByteBuffer.wrap(bytes));
+	    	//out.close();
+	    	//ostream.write(sb.toString().getBytes("UTF8"));
+	    	//ostream.close();
 	    	writeChannel.closeFinally();
 	    	
 	    	BlobKey blobKey = fileService.getBlobKey(file);

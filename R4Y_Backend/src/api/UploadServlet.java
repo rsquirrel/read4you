@@ -71,6 +71,7 @@ public class UploadServlet extends HttpServlet {
 				}
 				//create a new file info entity as a child of the user root
 				Entity fileInfo = new Entity("TextFile", blobKey.getKeyString(), rootKey);
+				fileInfo.setProperty("owner", user.getNickname());
 				fileInfo.setProperty("filename", filename);
 				fileInfo.setProperty("req_type", reqType);
 				fileInfo.setProperty("category", category);
