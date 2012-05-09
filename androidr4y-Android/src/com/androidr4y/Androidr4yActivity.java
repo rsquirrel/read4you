@@ -14,12 +14,6 @@
  *******************************************************************************/
 package com.androidr4y;
 
-import com.google.web.bindery.requestfactory.shared.Receiver;
-import com.google.web.bindery.requestfactory.shared.ServerFailure;
-
-import com.androidr4y.client.MyRequestFactory;
-import com.androidr4y.client.MyRequestFactory.HelloWorldRequest;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,8 +27,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.androidr4y.client.MyRequestFactory;
+import com.androidr4y.client.MyRequestFactory.HelloWorldRequest;
+import com.google.web.bindery.requestfactory.shared.Receiver;
+import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 /**
  * Main activity - requests "Hello, World" messages from the server and provides
@@ -44,6 +48,13 @@ public class Androidr4yActivity extends Activity {
     /**
      * Tag for logging.
      */
+	
+	static final String[] FRUITS = new String[] { "Apple", "Avocado", "Banana",
+		"Blueberry", "Coconut", "Durian", "Guava", "Kiwifruit",
+		"Jackfruit", "Mango", "Olive", "Pear", "Sugar-apple" };
+	
+	
+	
     private static final String TAG = "Androidr4yActivity";
 
     /**
@@ -102,7 +113,8 @@ public class Androidr4yActivity extends Activity {
         if (Util.DISCONNECTED.equals(connectionStatus)) {
             startActivity(new Intent(this, AccountsActivity.class));
         }
-        setScreenContent(R.layout.hello_world);
+      //  setScreenContent(R.layout.hello_world);
+        setMainScreenContent();
     }
 
     /**
@@ -124,7 +136,23 @@ public class Androidr4yActivity extends Activity {
     }
 
     // Manage UI Screens
-
+    private void setMainScreenContent(){
+    	setContentView(R.layout.main);
+    	setListAdapter(new ArrayAdapter<String>(this, R.layout.list_files,FRUITS));
+    	 
+		ListView listView = getListView();
+		listView.setTextFilterEnabled(true);
+ 
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+			    // When clicked, show a toast with the TextView text
+			    Toast.makeText(getApplicationContext(),
+				((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+			}
+		});
+    	
+    }
     private void setHelloWorldScreenContent() {
         setContentView(R.layout.hello_world);
 
