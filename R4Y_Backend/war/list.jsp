@@ -71,33 +71,86 @@
 	}
 %>
 
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <title>My Files</title>
-    </head>
-    <body>
-    	<div id=wrapper align=center>
-    	<% if (user == null) { %>
-    		<p>Welcome to Read4You!
-    			<a href="<%= userService.createLoginURL("/list") %>">Sign in or register</a>
-    		</p>
-    	<% } else { %>
-    		<p><span style="padding-left:15px;padding-right:15px">Hi, <%= user.getNickname() %></span>
-    			|<span style="padding-left:15px;padding-right:15px">My Files</span>
-    			|<span style="padding-left:15px;padding-right:15px">
-    				<a href="/search">Search All Files</a>
-    			</span>
-    			|<span style="padding-left:15px;padding-right:15px">
-    				<a href="<%= userService.createLogoutURL("/list") %>">Log Out</a>
-    			</span>
-    		</p>
-    		<hr width=600 />
-    		<p style="width:600px;text-align:left;">
-    			<a href="/posttext">Post New Text File</a>
-			</p>
-			<form action="/list" method="get"><%= navBar %></form>
-			<table>
+    <meta charset="utf-8">
+    <title>Bootstrap, from Twitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../stylesheets/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="../stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../stylesheets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../stylesheets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../stylesheets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../stylesheets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../stylesheets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+    
+       <body>
+    	<div id=wrapper align=center class="navbar navbar-fixed-top">
+    	<div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Read4You</a>
+          <div class="btn-group pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="icon-user"></i> Username
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+            <% if (user == null) { %>
+            <li>        
+<a href="<%= userService.createLoginURL("/list") %>">Sign in or register</a>
+</li>
+<% } else { %>
+<li><a href="#"><%= user.getNickname() %></a></li>
+<li class="divider"></li>
+<li><a href="<%= userService.createLogoutURL("/list") %>">Sign Out</a></li>
+<%} %>
+            </ul>
+            </div>
+            <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#contact">My Files</a></li>
+              <li><a href="/search">Search All Files</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+            <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+            <li class="nav-header">Your fILE</li>
+            <form action="/list" method="get"><%= navBar %></form>
+			<table class="table table-striped">
 				<col width=200><col width=150><col width=150><col width=50><col width=50>
 				<tr style="text-align:left">
 					<th>File Name</th>
@@ -108,7 +161,19 @@
 				</tr>
 				<%= fileList %>
 			</table>
-		<% } %>
-        </div>
+              
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+         <div class="span8">
+    		<div class="hero-unit">
+            <h1>Upload Your File Now</h1>
+            <p>Read4You allow you to upload any readable file for people around the world to read, share, or translate to other language for you.</p>
+            <p><a class="btn btn-primary btn-large" href="/posttext">Upload new file &raquo;</a></p>
+          </div>
+          </div>
+    		
+			
+		
     </body>
 </html>
