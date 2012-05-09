@@ -11,6 +11,8 @@
 <%@ page import="com.google.appengine.api.datastore.Query" %>
 <%@ page import="com.google.appengine.api.datastore.FetchOptions" %>
 <%@ page import="java.util.List" %>
+<%@ page import="api.CachedQuery" %>
+<%@ page import="api.UtilsClass" %>
 
 <%
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -22,13 +24,14 @@
 	// the following strings are used to construct an html webpage
 	String wavlist = "";	// list of the audio files
 	String filename = "";
+	String navBar = "";
 	
 	Key textKey = null;
 	if (user != null && text_id != null)
 	{
-		textKey = KeyFactory.stringToKey(text_id);
-		Entity textInfo = null;
 		try {
+			textKey = KeyFactory.stringToKey(text_id);
+			Entity textInfo = null;
 			textInfo = datastore.get(textKey);
 		
 			/******************************************
@@ -38,11 +41,36 @@
 			filename = "<h1>"
 					+ textInfo.getProperty("filename").toString()
 					+ "</h1>";
+
+			CachedQuery fileQuery = new CachedQuery(textKey, "AudioFile");
 			
-			Query audioQuery = new Query("AudioFile");
-			audioQuery.setAncestor(textKey);
-			FetchOptions fetchOp = FetchOptions.Builder.withDefaults();
-			List<Entity> results = datastore.prepare(audioQuery).asList(fetchOp);
+			/******************************************
+			 * Construct the navigation bar (pages)
+			 ******************************************/
+			 
+			int limit = 5;
+			int page_num = UtilsClass.convertPageNum(request.getParameter("page"));
+			int offset = (page_num - 1) * limit;
+			
+			int numPages = (fileQuery.getCount() - 1) / limit + 1;
+			String url = "/read?bk=" + text_id + "&page=";
+			navBar = "<table>\n<col width=20><col width=170><col width=20>\n<tr>\n<td align=\"left\">";
+			if (page_num > 1) {
+				navBar += "<a href=\"" + url + (page_num - 1) + "\">&lt;</a>";
+			}
+			navBar += "</td>\n<td align=\"center\">Page&nbsp;" + 
+				"<input type=\"text\" name=\"page\" maxlength=3 style=\"width:30px;text-align:right;\" value=\"" +
+				page_num + "\">/" + numPages + "</td>\n<td align=\"right\">";
+			if (page_num < numPages) {
+				navBar += "<a href=\"" + url + (page_num + 1)+ "\">&gt;</a>";
+			}
+			navBar += "</td></table>";
+			
+			/******************************************
+			 * Construct the audio file list
+			 ******************************************/
+			
+			List<Entity> results = fileQuery.getList(limit, offset);
 			wavlist = "";
 	
 			for (Entity e: results)
@@ -74,7 +102,7 @@
 	<!-- GUI code... take it or leave it -->
 	<script type="text/javascript" src="/wami/gui.js"></script>
 	
-	<script>
+	<script type="text/javascript">
 		function setupRecorder() {
 			Wami.setup({
 				id : "wami",
@@ -152,7 +180,13 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="vertical-align:top; width:220px"><%= wavlist %></td>
+					<td style="vertical-align:top; width:220px">
+			    		<form action="/read" method="get">
+			    			<%= navBar %>
+			    			<input type="hidden" name="bk" value="<%= text_id %>" />
+			    		</form>
+						<%= wavlist %>
+					</td>
 				</tr>
 			</table>
 			<br />
