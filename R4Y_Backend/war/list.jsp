@@ -1,4 +1,8 @@
+<%@ page import="api.CachedQuery" %>
+<%@ page import="api.UtilsClass" %>
+
 <%@ page import="java.util.List" %>
+
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService" %>
@@ -17,23 +21,45 @@
 	BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
 	UserService userService = UserServiceFactory.getUserService();
 	User user = userService.getCurrentUser();
-	
+
+	String navBar = "";
 	String fileList = "";
+	
 	if (user != null) {
-		Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
 		
+		int limit = 5;
+		int page_num = UtilsClass.convertPageNum(request.getParameter("page"));
+		int offset = (page_num - 1) * limit;
+		
+		/******************************************
+		 * Construct the navigation bar (pages)
+		 ******************************************/
+		
+		//query all the text files
+		Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
+		CachedQuery fileQuery = new CachedQuery(rootKey, "TextFile");	//under the user root
+		
+		int numPages = (fileQuery.getCount() - 1) / limit + 1;
+		navBar = "<table>\n<col width=100><col width=400><col width=100>\n<tr>\n<td align=\"left\">";
+		if (page_num > 1) {
+			navBar += "<a href=\"/list?page=" + (page_num - 1) + "\">Prev Page</a>";
+		}
+		navBar += "</td>\n<td align=\"center\">Page&nbsp;" + 
+			"<input type=\"text\" name=\"page\" maxlength=3 style=\"width:30px;text-align:right;\" value=\"" +
+			page_num + "\">/" + numPages + "</td>\n<td align=\"right\">";
+		if (page_num < numPages) {
+			navBar += "<a href=\"/list?page=" + (page_num + 1)+ "\">Next Page</a>";
+		}
+		navBar += "</td></table>";
+	
 		/******************************************
 		 * Construct the table of text files
 		 ******************************************/
-		
-		Query fileQuery = new Query("TextFile");	//query all the text files
-		fileQuery.setAncestor(rootKey);				//under the user root
-		FetchOptions fetchOp = FetchOptions.Builder.withDefaults();
-		List<Entity> results = datastore.prepare(fileQuery).asList(fetchOp);
+		 
+		List<Entity> results = fileQuery.getList(limit, offset);
 		for (Entity fileInfo : results) {			//for each file, generate an entry
-			Query audioQuery = new Query("AudioFile");
-			audioQuery.setAncestor(fileInfo.getKey());
-			int numAudio = datastore.prepare(audioQuery).countEntities(fetchOp);
+			CachedQuery audioQuery = new CachedQuery(fileInfo.getKey(), "AudioFile");
+			int numAudio = audioQuery.getCount();
 			fileList += "<tr>\n<td><a href=\"/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
 					"\">" + fileInfo.getProperty("filename") + "</a></td>\n<td>" +
 					fileInfo.getProperty("category") + "</td>\n<td>" +
@@ -70,6 +96,7 @@
     		<p style="width:600px;text-align:left;">
     			<a href="/posttext">Post New Text File</a>
 			</p>
+			<form action="/list" method="get"><%= navBar %></form>
 			<table>
 				<col width=200><col width=150><col width=150><col width=50><col width=50>
 				<tr style="text-align:left">
