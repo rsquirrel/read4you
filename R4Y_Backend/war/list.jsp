@@ -135,24 +135,29 @@
             </div>
             <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#contact">My Files</a></li>
+              <li class="active"><a href="/list">My Files</a></li>
               <li><a href="/search">Search</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
-            <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span4">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-            <li class="nav-header">Your fILE</li>
-            <form action="/list" method="get"><%= navBar %></form>
-			<table class="table table-striped">
+    
+    <div class="container">
+    <% if (user == null) { %>
+    <div class="hero-unit">
+            <h1>Welcome to Read4You</h1>
+            <p>Read4You allow you to upload any readable file for people around the world to read, share, or translate to other language for you.</p>
+            <p><a class="btn btn-primary btn-large" href="<%= userService.createLoginURL("/list") %>">Sign in now &raquo;</a></p>
+          </div>
+           
+<% } else { %>
+<div class="span8 offset2">
+<p><a class="btn btn-primary btn-large" href="/posttext">Upload &raquo;</a></p>
+<form class="well span4 offset1" action="/list" method="get"><%= navBar %></form>
+			<table  class="table table-striped">
 				<col width=200><col width=150><col width=150><col width=50><col width=50>
-				<tr style="text-align:left">
+				<tr style="text-align:center">
 					<th>File Name</th>
 					<th>Category</th>
 					<th>Request For</th>
@@ -161,20 +166,14 @@
 				</tr>
 				<%= fileList %>
 			</table>
-              
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-         <div class="span8">
-    		<div class="hero-unit">
-            <h1>Upload Your File Now</h1>
-            <p>Read4You allow you to upload any readable file for people around the world to read, share, or translate to other language for you.</p>
-            <p><a class="btn btn-primary btn-large" href="/posttext">Upload new file &raquo;</a></p>
-          </div>
-          </div>
+			
+			</div>
+<%} %>
+           
     		
 			
-		
+			</div>
+	
     </body>
      <script src="../stylesheets/js/jquery.js"></script>
     <script src="../stylesheets/js/bootstrap-transition.js"></script>

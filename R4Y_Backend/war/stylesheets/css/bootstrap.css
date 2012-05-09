@@ -4958,3 +4958,8 @@ a.badge:hover {
 .invisible {
   visibility: hidden;
 }
+.center-table
+{
+  margin: 0 auto !important;
+  float: none !important;
+}

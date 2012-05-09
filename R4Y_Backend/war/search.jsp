@@ -103,8 +103,37 @@
 
 <html>
     <head>
-        <title>Search Files</title>
-    </head>
+       <meta charset="utf-8">
+    <title>Bootstrap, from Twitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../stylesheets/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="../stylesheets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../stylesheets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../stylesheets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../stylesheets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../stylesheets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../stylesheets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
     
     <script type="text/javascript">
 		function decreasePage() {
@@ -120,46 +149,66 @@
 	</script>
     
     <body>
-    	<div id=wrapper align=center>
-    	<% if (user == null) { %>
-    		<p>Welcome to Read4You!
-    			<a href="<%= userService.createLoginURL("/search") %>">Sign in or register</a>
-    		</p>
-    	<% } else { %>
-    		<p><span style="padding-left:15px;padding-right:15px">Hi, <%= user.getNickname() %></span>
-    			|<span style="padding-left:15px;padding-right:15px">
-    				<a href="/list">My Files</a>
-    			</span>
-    			|<span style="padding-left:15px;padding-right:15px">Search All Files</span>
-    			|<span style="padding-left:15px;padding-right:15px">
-    				<a href="<%= userService.createLogoutURL("/list") %>">Log Out</a>
-    			</span>
-    		</p>
-    		<hr width=600 />
-    		<br />
-    		<form id="page_form" action="/search" method="get">
+    	    	<div id=wrapper align=center class="navbar navbar-fixed-top">
+    	<div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Read4You</a>
+          <div class="btn-group pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="icon-user"></i> Username
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+            <% if (user == null) { %>
+            <li>        
+<a href="<%= userService.createLoginURL("/list") %>">Sign in or register</a>
+</li>
+<% } else { %>
+<li><a href="#"><%= user.getNickname() %></a></li>
+<li class="divider"></li>
+<li><a href="<%= userService.createLogoutURL("/list") %>">Sign Out</a></li>
+<%} %>
+            </ul>
+            </div>
+            <div class="nav-collapse">
+            <ul class="nav">
+              <li ><a href="/list">My Files</a></li>
+              <li class="active"><a href="/search">Search</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    <div class="container offset1">
+    
+    		<form class="well span4 offset2" id="page_form" action="/search" method="get">
     			<%= navBar %>
     			<input type="hidden" name="owner" value="<%= owner %>" />
     			<input type="hidden" name="filename" value="<%= filename %>" />
     			<input type="hidden" name="category" value="<%= category %>" />
     			<input type="hidden" name="req_type" value="<%= req_type %>" />
     		</form>
-    		<form action="/search" method="get">
+    		<form class="well span8" action="/search" method="get">
 				<table>
 					<col width=150><col width=150><col width=125><col width=125><col width=50>
 					<tr style="text-align:left">
 						<th>Owner</th>
 						<th>File Name</th>
 						<th>Category</th>
-						<th>Request For</th>
+						<th>Request</th>
 						<th>Audio</th>
 					</tr>
 					<tr style="text-align:left">
-						<td><input type="text" size="20" name="owner" value=<%= owner %>></td>
-						<td><input type="text" size="20" name="filename" value=<%= filename %>></td>
-						<td><input type="text" size="15" name="category" value=<%= category %>></td>
+						<td><input type="text" class="input-small" name="owner" value=<%= owner %>></td>
+						<td><input type="text" class="input-small" name="filename" value=<%= filename %>></td>
+						<td><input type="text" class="input-small" name="category" value=<%= category %>></td>
 						<td>
-							<select name="req_type">
+							<select name="req_type" class="span1">
 								<option <%= select_blank %>></option>
 								<option <%= select_read %>>Read</option>
 								<option <%= select_comment %>>Comment</option>
@@ -167,12 +216,25 @@
 								<option <%= select_translate %>>Translate</option>
 							</select>
 						</td>
-						<td><input type="submit" value="Search" /></td>
+						<td><input type="checkbox" class="span2"></td>
+						<td><button type="submit" class="btn btn-primary">Search</button></td>
 					</tr>
 					<%= fileList %>
 				</table>
 			</form>
-		<% } %>
-        </div>
+			</div>
     </body>
+     <script src="../stylesheets/js/jquery.js"></script>
+    <script src="../stylesheets/js/bootstrap-transition.js"></script>
+    <script src="../stylesheets/js/bootstrap-alert.js"></script>
+    <script src="../stylesheets/js/bootstrap-modal.js"></script>
+    <script src="../stylesheets/js/bootstrap-dropdown.js"></script>
+    <script src="../stylesheets/js/bootstrap-scrollspy.js"></script>
+    <script src="../stylesheets/js/bootstrap-tab.js"></script>
+    <script src="../stylesheets/js/bootstrap-tooltip.js"></script>
+    <script src="../stylesheets/js/bootstrap-popover.js"></script>
+    <script src="../stylesheets/js/bootstrap-button.js"></script>
+    <script src="../stylesheets/js/bootstrap-collapse.js"></script>
+    <script src="../stylesheets/js/bootstrap-carousel.js"></script>
+    <script src="../stylesheets/js/bootstrap-typeahead.js"></script>
 </html>
