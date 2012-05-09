@@ -137,6 +137,7 @@
             <ul class="nav">
               <li class="active"><a href="/list">My Files</a></li>
               <li><a href="/search">Search</a></li>
+              <li><a href="/posttext">Upload</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -153,7 +154,6 @@
            
 <% } else { %>
 <div class="span8 offset2">
-<p><a class="btn btn-primary btn-large" href="/posttext">Upload &raquo;</a></p>
 <form class="well span4 offset1" action="/list" method="get"><%= navBar %></form>
 			<table  class="table table-striped">
 				<col width=200><col width=150><col width=150><col width=50><col width=50>
