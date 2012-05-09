@@ -179,6 +179,7 @@
             <ul class="nav">
               <li ><a href="/list">My Files</a></li>
               <li class="active"><a href="/search">Search</a></li>
+              <li><a href="/posttext">Upload</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
