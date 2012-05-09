@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000000"
+    android:gravity="fill"
+    android:orientation="vertical"
+    android:scrollbars="vertical" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/buttonlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#2B60DE"
+        android:gravity="left|right|top"
+        android:height="32dp"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/buttonlayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/imgbtn1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/app_icon" />
+
+            <TextView
+                android:id="@+id/txtTest"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="Read4You"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/buttonlayout2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Button" 
+                    android:visibility="invisible"/>
+                
+            </LinearLayout>
+        </LinearLayout>
+
+        <TableLayout
+            android:id="@+id/TableLayoutTop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:orientation="vertical"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="horizontal|vertical"
+            android:shrinkColumns="2" >
+
+           <TableRow
+               android:id="@+id/TableRowTop"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" >
+
+               <Button
+                   android:id="@+id/button2"
+                   android:layout_width="wrap_content"
+                   android:layout_height="32dp"
+                   android:text="Button" 
+                   android:visibility="invisible"/>
+
+                <ImageButton
+                    android:id="@+id/imgbtn3"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/app_icon" />
+
+                <ImageButton
+                    android:id="@+id/imgbtn2"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/app_icon" />
+
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtTest"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:text="Read4You"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
