@@ -51,7 +51,9 @@ public class UploadServlet extends HttpServlet {
 		    		datastore.get(rootKey);
 		    	} catch (EntityNotFoundException e) {
 		    		//create the root entity in case there isn't
-		    		datastore.put(new Entity(rootKey));
+		    		Entity rootEntity = new Entity (rootKey);
+		    		rootEntity.setProperty("email", user.getEmail());
+		    		datastore.put(rootEntity);
 		    	}
 				String filename = req.getParameter("file_name");
 				String reqType = req.getParameter("req_type");

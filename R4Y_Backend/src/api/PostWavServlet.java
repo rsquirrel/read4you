@@ -1,6 +1,7 @@
 package api;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,8 +39,16 @@ public class PostWavServlet extends HttpServlet {
 				User user = userService.getCurrentUser();
 				if (user != null) {	//only allow when user logs in
 					Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
+					Entity rootEntity;
 					try {
-						Entity rootEntity = datastore.get(rootKey);
+						rootEntity = datastore.get(rootKey);
+
+					} catch (EntityNotFoundException e) {
+						System.err.println("user root entity not found: ");
+						rootEntity = new Entity (rootKey);
+			    		rootEntity.setProperty("email", user.getEmail());
+			    		datastore.put(rootEntity);
+					}
 						Object t = rootEntity.getProperty("last_audio");
 						if (t != null) {	//there is an audio file recorded
 							String audioBlobKey = t.toString();
@@ -60,18 +69,23 @@ public class PostWavServlet extends HttpServlet {
 							audioEntity.setProperty("uploader", uploaderID);
 							datastore.put(audioEntity);
 							
+							Notification notice = new Notification();
+							String link = "http://" + req.getServerName() + ":" + req.getServerPort() + "/read?bk=" + textID;
+							String owner_email = (String)datastore.get(datastore.get(textKey).getParent()).getProperty("email");
+							notice.sendEmail(link, new Date(), owner_email);
+							
 							//resp.sendRedirect("/serve?bk=" + audioBlobKey);
 						} else {
 							System.err.println("no audio file recorded");
 						}
-					} catch (EntityNotFoundException e) {
-						System.err.println("user root entity not found: ");
-					}
 				}
 				resp.sendRedirect("/read?bk=" + textID);
 				
 			} catch (IllegalArgumentException e) {
 				System.err.println("text file ID is null");
+			} catch (EntityNotFoundException e)
+			{
+				System.err.println("user root or text entity not found: ");
 			}
 		} else {
 			System.err.println("text file ID is null");
