@@ -99,7 +99,7 @@
     			</span>
     			|<span style="padding-left:15px;padding-right:15px">Search All Files</span>
     			|<span style="padding-left:15px;padding-right:15px">
-    				<a href="<%= userService.createLogoutURL("/list") %>"> | Log Out</a>
+    				<a href="<%= userService.createLogoutURL("/list") %>">Log Out</a>
     			</span>
     		</p>
     		<hr width=600 />

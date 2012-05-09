@@ -108,7 +108,7 @@
     				<a href="/search">Search All Files</a>
     			</span>
     			|<span style="padding-left:15px;padding-right:15px">
-    				<a href="<%= userService.createLogoutURL("/list") %>"> | Log Out</a>
+    				<a href="<%= userService.createLogoutURL("/list") %>">Log Out</a>
     			</span>
     		</p>
     		<hr width=800 />
@@ -155,6 +155,7 @@
 					<td style="vertical-align:top; width:220px"><%= wavlist %></td>
 				</tr>
 			</table>
+			<br />
 			<% }
     	} %>
 </div>
