@@ -137,7 +137,7 @@
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
               <li><a href="#contact">My Files</a></li>
-              <li><a href="/search">Search All Files</a></li>
+              <li><a href="/search">Search</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -176,4 +176,18 @@
 			
 		
     </body>
+     <script src="../stylesheets/js/jquery.js"></script>
+    <script src="../stylesheets/js/bootstrap-transition.js"></script>
+    <script src="../stylesheets/js/bootstrap-alert.js"></script>
+    <script src="../stylesheets/js/bootstrap-modal.js"></script>
+    <script src="../stylesheets/js/bootstrap-dropdown.js"></script>
+    <script src="../stylesheets/js/bootstrap-scrollspy.js"></script>
+    <script src="../stylesheets/js/bootstrap-tab.js"></script>
+    <script src="../stylesheets/js/bootstrap-tooltip.js"></script>
+    <script src="../stylesheets/js/bootstrap-popover.js"></script>
+    <script src="../stylesheets/js/bootstrap-button.js"></script>
+    <script src="../stylesheets/js/bootstrap-collapse.js"></script>
+    <script src="../stylesheets/js/bootstrap-carousel.js"></script>
+    <script src="../stylesheets/js/bootstrap-typeahead.js"></script>
+    
 </html>
