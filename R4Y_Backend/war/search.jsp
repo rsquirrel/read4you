@@ -185,7 +185,7 @@
         </div>
       </div>
     </div>
-    <div class="container offset1">
+    <div class="container offset2">
     
     		<form class="well span4 offset2" id="page_form" action="/search" method="get">
     			<%= navBar %>
