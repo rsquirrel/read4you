@@ -1,21 +1,25 @@
 package com.androidr4y.server;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class TextFile {
 
-	@Id
 	private String blobKey;	//the corresponding blob key
+	private String strKey;	//the corresponding str key
 	
 	private String filename;
 	private String category;
 	private String owner;
 	private String req_type;
 	private Date time;
+	private int num_audio;
+	
+	public TextFile(String k, String bk) {
+		strKey = k;
+		blobKey = bk;
+	}
 	
 	public String getFilename() {
 		return filename;
@@ -38,10 +42,10 @@ public class TextFile {
 		this.owner = owner;
 	}
 	
-	public String getReq_type() {
+	public String getReqType() {
 		return req_type;
 	}
-	public void setReq_type(String req_type) {
+	public void setReqType(String req_type) {
 		this.req_type = req_type;
 	}
 	
@@ -51,8 +55,30 @@ public class TextFile {
 	public void setTime(Date time) {
 		this.time = time;
 	}
-	
+
+	public int getNumAudio() {
+		return num_audio;
+	}
+	public void setNumAudio(int num_audio) {
+		this.num_audio = num_audio;
+	}
+
+	public String getStrKey() {
+		return strKey;
+	}
 	public String getBlobKey() {
 		return blobKey;
+	}
+	
+	public String toString() {
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		return (strKey + "\n" +
+				filename + "\n" +
+				blobKey + "\n" +
+				category + "\n" +
+				owner + "\n" +
+				req_type + "\n" +
+				dateFormat.format(time) +
+				num_audio);
 	}
 }
