@@ -78,5 +78,105 @@
       <role-name>admin</role-name>
     </auth-constraint>
   </security-constraint>
+  
+  <servlet>
+		<servlet-name>Upload</servlet-name>
+		<servlet-class>api.UploadServlet</servlet-class>
+	</servlet>
+  
+	<servlet>
+		<servlet-name>Serve</servlet-name>
+		<servlet-class>api.ServeServlet</servlet-class>
+	</servlet>
+  
+	<servlet>
+		<servlet-name>Delete</servlet-name>
+		<servlet-class>api.DeleteServlet</servlet-class>
+	</servlet>
+  
+	<servlet>
+		<servlet-name>List</servlet-name>
+		<jsp-file>/list.jsp</jsp-file>
+	</servlet>
+  
+	<servlet>
+		<servlet-name>Search</servlet-name>
+		<jsp-file>/search.jsp</jsp-file>
+	</servlet>
+  
+	<servlet>
+		<servlet-name>PostText</servlet-name>
+		<jsp-file>/post.jsp</jsp-file>
+	</servlet>
+  
+	<servlet>
+		<servlet-name>PostWav</servlet-name>
+		<servlet-class>api.PostWavServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>Read</servlet-name>
+		<jsp-file>/read.jsp</jsp-file>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>AssociateInfo</servlet-name>
+		<servlet-class>api.AssociateInfoServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>Wave</servlet-name>
+		<servlet-class>api.WaveServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Upload</servlet-name>
+		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Serve</servlet-name>
+		<url-pattern>/serve</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Delete</servlet-name>
+		<url-pattern>/delete</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>List</servlet-name>
+		<url-pattern>/list</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Search</servlet-name>
+		<url-pattern>/search</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>PostText</servlet-name>
+		<url-pattern>/posttext</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>PostWav</servlet-name>
+		<url-pattern>/postwav</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Read</servlet-name>
+		<url-pattern>/read</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>AssociateInfo</servlet-name>
+		<url-pattern>/associate</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Wave</servlet-name>
+		<url-pattern>/wav</url-pattern>
+	</servlet-mapping>
 
 </web-app>
