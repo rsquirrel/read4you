@@ -49,6 +49,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>api.WaveServlet</servlet-class>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>TaskCreater</servlet-name>
+		<servlet-class>api.TaskCreaterServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>AudioProcessing</servlet-name>
+		<servlet-class>api.AudioProcessingServlet</servlet-class>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>Upload</servlet-name>
 		<url-pattern>/upload</url-pattern>
@@ -92,6 +102,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>Wave</servlet-name>
 		<url-pattern>/wav</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>TaskCreater</servlet-name>
+		<url-pattern>/createtask</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>AudioProcessing</servlet-name>
+		<url-pattern>/audioproc</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

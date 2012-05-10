@@ -59,14 +59,17 @@ public class PostWavServlet extends HttpServlet
 						rootEntity.setProperty("email", user.getEmail());
 						Storage.put(rootEntity);
 					}
-					Object t = rootEntity.getProperty("last_audio");
+						Object t = rootEntity.getProperty("last_audio");
+						Object t2 = rootEntity.getProperty("last_audio_len");
 					if (t != null)
 					{ // there is an audio file recorded
 						Transaction txn = datastore.beginTransaction();	// begin a transaction
 						try	
 						{
 							String audioBlobKey = t.toString();
+
 							rootEntity.setProperty("last_audio", null);
+							rootEntity.setProperty("last_audio_len", null);
 							Storage.put(rootEntity);
 
 							String usage = req.getParameter("usage");
@@ -83,6 +86,8 @@ public class PostWavServlet extends HttpServlet
 							audioEntity.setProperty("usage", usage);
 							audioEntity.setProperty("uploader", uploaderID);
 							audioEntity.setProperty("time", new Date());
+							audioEntity.setProperty("length", t2);
+							audioEntity.setUnindexedProperty("processing", "0");
 							Storage.put(audioEntity);
 
 							Notification notice = new Notification();
