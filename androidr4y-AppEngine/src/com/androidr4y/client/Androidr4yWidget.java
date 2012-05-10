@@ -35,7 +35,6 @@ import com.google.web.bindery.requestfactory.shared.ServerFailure;
 import com.androidr4y.client.MyRequestFactory.HelloWorldRequest;
 import com.androidr4y.client.MyRequestFactory.MessageRequest;
 import com.androidr4y.shared.MessageProxy;
-import com.androidr4y.shared.Androidr4yRequest;
 
 public class Androidr4yWidget extends Composite {
 

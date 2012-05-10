@@ -15,6 +15,7 @@
 package com.androidr4y.client;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.web.bindery.requestfactory.shared.InstanceRequest;
 import com.google.web.bindery.requestfactory.shared.Request;
@@ -22,6 +23,8 @@ import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.RequestFactory;
 import com.google.web.bindery.requestfactory.shared.ServiceName;
 
+import com.androidr4y.server.AudioFile;
+import com.androidr4y.server.TextFile;
 import com.androidr4y.shared.MessageProxy;
 import com.androidr4y.shared.RegistrationInfoProxy;
 
@@ -59,6 +62,10 @@ public interface MyRequestFactory extends RequestFactory {
 	@ServiceName(value = "com.androidr4y.server.Androidr4yService", locator = "com.androidr4y.server.Androidr4yServiceLocator")
 	public interface Androidr4yRequest extends RequestContext {
 		Request<List<String>> getFileList();
+		Request<List<String>> getSearchList(String owner, String filename,
+				String category, String req_type);
+		Request<List<String>> getAudioList(String strKey);
+		Request<String> getUploadURL();
 	}
 
 	HelloWorldRequest helloWorldRequest();
