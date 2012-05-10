@@ -23,8 +23,6 @@ import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.RequestFactory;
 import com.google.web.bindery.requestfactory.shared.ServiceName;
 
-import com.androidr4y.server.AudioFile;
-import com.androidr4y.server.TextFile;
 import com.androidr4y.shared.MessageProxy;
 import com.androidr4y.shared.RegistrationInfoProxy;
 
