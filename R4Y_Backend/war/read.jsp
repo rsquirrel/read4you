@@ -209,7 +209,7 @@
 										<noscript>WAMI requires Javascript</noscript>
 									</td>
 									<td style="padding-top:40px; padding-right:30px;">
-										<select name="usage">
+										<select name="usage" class="span2">
 											<option>Read</option>
 											<option>Comment</option>
 											<option>Explain</option>
@@ -222,7 +222,7 @@
 										<input type="hidden" name="text_file" value="<%=
 											(textKey != null)?KeyFactory.keyToString(textKey):"null" %>" />
 										<input type="hidden" name="uploader" value="<%= user.getNickname() %>" />
-										<input id="submit" type="submit" name="submit" />
+										<button type="submit" class="btn btn-primary">Submit</button>
 									</td>
 								</tr>
 							</table>
