@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import api.CachedQuery;
+import api.Notification;
 
 import com.androidr4y.annotation.ServiceMethod;
 import com.androidr4y.shared.AudioFile;
@@ -15,6 +16,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
@@ -24,7 +26,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 public class Androidr4yService {
 	
-	//private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	private BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
 	private UserService userService = UserServiceFactory.getUserService();
 
@@ -169,8 +171,26 @@ public class Androidr4yService {
 	}
 	
 	@ServiceMethod
-	String getUploadURL() {
+	public String getUploadURL() {
 		return blobstore.createUploadUrl("/upaudio");
+	}
+	
+	@ServiceMethod
+	public String sendEmail(String textID) {
+		Notification notice = new Notification();
+		Key textKey = KeyFactory.stringToKey(textID);
+		String link = "http://androidr4y.appspot.com/read?bk=" + textID;
+		try {
+			String owner_email = (String)datastore.get(
+					datastore.get(textKey).getParent()).getProperty("email");
+			System.err.println("owner_email " + owner_email);
+			notice.sendEmail(link, new Date(), owner_email);
+			return "OK";
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "ERR";
 	}
 
 /*

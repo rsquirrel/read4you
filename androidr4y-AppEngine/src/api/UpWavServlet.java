@@ -36,6 +36,7 @@ public class UpWavServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		String textID = req.getParameter("text_file");
+		System.err.println("text_file " + textID);
 		Map<String, List<BlobKey>> blobs = blobstore.getUploads(req);
 		
 		//textID shouldn't be null, used to locate the text file and redirect
@@ -46,14 +47,16 @@ public class UpWavServlet extends HttpServlet {
 			BlobKey audioBlobKey = blobs.get("audio_file").get(0);
 						
 			String usage = req.getParameter("usage");
+			System.err.println("usage " + usage);
 			User user = userService.getCurrentUser();
-			String uploaderID;
+			/*String uploaderID;
 			if (user == null) {
 				uploaderID = null;
 			} else {
 				uploaderID = user.getNickname();
-			}
-			//req.getParameter("uploader");
+			}*/
+			String uploaderID = req.getParameter("uploader");
+			//System.err.println("uploader " + uploaderID);
 			
 			Entity audioEntity = new Entity("AudioFile",
 					audioBlobKey.getKeyString(), textKey);
@@ -61,6 +64,8 @@ public class UpWavServlet extends HttpServlet {
 			audioEntity.setProperty("usage", usage);
 			audioEntity.setProperty("uploader", uploaderID);
 			audioEntity.setProperty("time", new Date());
+			audioEntity.setProperty("length", "0");
+			audioEntity.setUnindexedProperty("processing", "0");
 			datastore.put(audioEntity);
 
 			//send email for notification
@@ -68,8 +73,10 @@ public class UpWavServlet extends HttpServlet {
 				Notification notice = new Notification();
 				String link = "http://" + req.getServerName() + ":"
 						+ req.getServerPort() + "/read?bk=" + textID;
+				System.err.println("link " + link);
 				String owner_email = (String)datastore.get(
 						datastore.get(textKey).getParent()).getProperty("email");
+				System.err.println("owner_email " + owner_email);
 				notice.sendEmail(link, new Date(), owner_email);
 			} catch (EntityNotFoundException e) {
 				// TODO Auto-generated catch block

@@ -82,7 +82,7 @@ public class TextFile {
 		result.append(req_type + "$\n$");
 		result.append(dateFormat.format(time) + "$\n$");
 		result.append(num_audio);
-		System.err.println(result.toString());
+		//System.err.println(result.toString());
 		return result.toString();
 	}
 	

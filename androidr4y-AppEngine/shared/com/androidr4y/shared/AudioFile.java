@@ -50,7 +50,7 @@ public class AudioFile {
 		result.append(usage + "$\n$");
 		result.append(uploader + "$\n$");
 		result.append(dateFormat.format(time));
-		System.err.println(result.toString());
+		//System.err.println(result.toString());
 		
 		return result.toString();
 	}
