@@ -64,6 +64,7 @@ public interface MyRequestFactory extends RequestFactory {
 				String category, String req_type);
 		Request<List<String>> getAudioList(String strKey);
 		Request<String> getUploadURL();
+		Request<String> sendEmail(String textID);
 	}
 
 	HelloWorldRequest helloWorldRequest();

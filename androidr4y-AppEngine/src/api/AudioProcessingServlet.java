@@ -48,41 +48,29 @@ public class AudioProcessingServlet extends HttpServlet {
 
 			Entity aentity = Storage.get(akey);
 
+			int length = 0;
+			String lenString = null;
+			if (aentity.getProperty("length") != null) {
+				lenString = aentity.getProperty("length").toString();
+				//Integer.parseInt((String) aentity.getProperty("length"));
+				length = Integer.parseInt(lenString);
+			}
+			//System.out.println(length);
 			
-			String lenString = aentity.getProperty("length").toString();
-			int length = Integer.parseInt(lenString);//Integer.parseInt((String) aentity.getProperty("length"));
-			System.out.println(length);
+			if (length > 0) {
 							
+				BlobKey audioBlobKey = new BlobKey(akey.getName());
+				byte[] bytes = blobstoreService.fetchData(audioBlobKey, 0, length - 1);
 				
-			BlobKey audioBlobKey = new BlobKey(akey.getName());
-			byte[] bytes = blobstoreService.fetchData(audioBlobKey, 0, length - 1);
-			
-			
-			// TODO audio processing code.
-			byte[] newBytes = new byte[(int) length];	        
-			for (int i = 0; i < length; i++) {
-				newBytes[i] = bytes[i];
-			}
-			
-			
-			short maxVolume = 0;			
-			for (int i = 44; i < length; i += 2) {
-			    byte[] arr = new byte[2];
-			    for (int j = 0; j < 2; j++) {
-			    	arr[j] = newBytes[i + j];
-			    }
-			    ByteBuffer bb = ByteBuffer.wrap(arr);
-			    bb.order(ByteOrder.LITTLE_ENDIAN);
-			    short volume = bb.getShort();
-			    if (Math.abs(volume) > maxVolume)
-			    	maxVolume = (short) Math.abs(volume);
-			}
-			
-			System.out.println(maxVolume);
-			
-			if (scale > 1 && maxVolume * scale < 50000) {
-				System.out.println("volume up");
 				
+				// TODO audio processing code.
+				byte[] newBytes = new byte[(int) length];	        
+				for (int i = 0; i < length; i++) {
+					newBytes[i] = bytes[i];
+				}
+				
+				
+				short maxVolume = 0;			
 				for (int i = 44; i < length; i += 2) {
 				    byte[] arr = new byte[2];
 				    for (int j = 0; j < 2; j++) {
@@ -91,70 +79,87 @@ public class AudioProcessingServlet extends HttpServlet {
 				    ByteBuffer bb = ByteBuffer.wrap(arr);
 				    bb.order(ByteOrder.LITTLE_ENDIAN);
 				    short volume = bb.getShort();
-				    
-			    	volume = (short) (volume * scale);
-				    
-				    //System.out.println(volume);
-				    
-				    arr[1] = (byte) ((volume >> 8) & 0xFF);
-				    arr[0] = (byte) (volume & 0xFF);
-				    
-				    for (int j = 0; j < 2; j++) {
-				    	newBytes[i + j] = arr[j];
-				    }
+				    if (Math.abs(volume) > maxVolume)
+				    	maxVolume = (short) Math.abs(volume);
 				}
-			}
-			if (scale < 1) {
-				System.out.println("volume down");
 				
-				for (int i = 44; i < length; i += 2) {
-				    byte[] arr = new byte[2];
-				    for (int j = 0; j < 2; j++) {
-				    	arr[j] = newBytes[i + j];
-				    }
-				    ByteBuffer bb = ByteBuffer.wrap(arr);
-				    bb.order(ByteOrder.LITTLE_ENDIAN);
-				    short volume = bb.getShort();
-				    
-			    	volume = (short) (volume * scale);
-				    
-				    //System.out.println(volume);
-				    
-				    arr[1] = (byte) ((volume >> 8) & 0xFF);
-				    arr[0] = (byte) (volume & 0xFF);
-				    
-				    for (int j = 0; j < 2; j++) {
-				    	newBytes[i + j] = arr[j];
-				    }
+				System.out.println(maxVolume);
+				
+				if (scale > 1 && maxVolume * scale < 50000) {
+					System.out.println("volume up");
+					
+					for (int i = 44; i < length; i += 2) {
+					    byte[] arr = new byte[2];
+					    for (int j = 0; j < 2; j++) {
+					    	arr[j] = newBytes[i + j];
+					    }
+					    ByteBuffer bb = ByteBuffer.wrap(arr);
+					    bb.order(ByteOrder.LITTLE_ENDIAN);
+					    short volume = bb.getShort();
+					    
+				    	volume = (short) (volume * scale);
+					    
+					    //System.out.println(volume);
+					    
+					    arr[1] = (byte) ((volume >> 8) & 0xFF);
+					    arr[0] = (byte) (volume & 0xFF);
+					    
+					    for (int j = 0; j < 2; j++) {
+					    	newBytes[i + j] = arr[j];
+					    }
+					}
 				}
+				if (scale < 1) {
+					System.out.println("volume down");
+					
+					for (int i = 44; i < length; i += 2) {
+					    byte[] arr = new byte[2];
+					    for (int j = 0; j < 2; j++) {
+					    	arr[j] = newBytes[i + j];
+					    }
+					    ByteBuffer bb = ByteBuffer.wrap(arr);
+					    bb.order(ByteOrder.LITTLE_ENDIAN);
+					    short volume = bb.getShort();
+					    
+				    	volume = (short) (volume * scale);
+					    
+					    //System.out.println(volume);
+					    
+					    arr[1] = (byte) ((volume >> 8) & 0xFF);
+					    arr[0] = (byte) (volume & 0xFF);
+					    
+					    for (int j = 0; j < 2; j++) {
+					    	newBytes[i + j] = arr[j];
+					    }
+					}
+				}
+		        
+		        // write processed audio to a new blob file.
+		        FileService fileService = FileServiceFactory.getFileService();
+		    	AppEngineFile file = fileService.createNewBlobFile("audio/wav");
+		    	boolean lock = true;
+		    	FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);	    	
+	
+		    	writeChannel.write(ByteBuffer.wrap(newBytes));
+		    	writeChannel.closeFinally();	    	
+		    	BlobKey newBlobKey = fileService.getBlobKey(file);
+		        
+		    	Entity audioEntity = new Entity("AudioFile", newBlobKey.getKeyString(), akey.getParent());
+				//the third level UserRoot->TextFile->AudioFile
+				audioEntity.setProperty("usage", aentity.getProperty("usage"));
+				audioEntity.setProperty("uploader", aentity.getProperty("uploader"));
+				audioEntity.setProperty("time", new Date());
+				audioEntity.setProperty("length", lenString);
+				audioEntity.setUnindexedProperty("processing", "0");
+				Storage.put(audioEntity);
+				
+				Storage.delete(akey);
+				blobstoreService.delete(audioBlobKey);
+				
+		        //System.out.println("Task complete!");
 			}
-
+			
 	        Thread.sleep(10000);
-	        
-	        // write processed audio to a new blob file.
-	        FileService fileService = FileServiceFactory.getFileService();
-	    	AppEngineFile file = fileService.createNewBlobFile("audio/wav");
-	    	boolean lock = true;
-	    	FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);	    	
-
-	    	writeChannel.write(ByteBuffer.wrap(newBytes));
-	    	writeChannel.closeFinally();	    	
-	    	BlobKey newBlobKey = fileService.getBlobKey(file);
-	        
-	    	Entity audioEntity = new Entity("AudioFile", newBlobKey.getKeyString(), akey.getParent());
-			//the third level UserRoot->TextFile->AudioFile
-			audioEntity.setProperty("usage", aentity.getProperty("usage"));
-			audioEntity.setProperty("uploader", aentity.getProperty("uploader"));
-			audioEntity.setProperty("time", new Date());
-			audioEntity.setProperty("length", lenString);
-			audioEntity.setUnindexedProperty("processing", "0");
-			Storage.put(audioEntity);
-			
-			Storage.delete(akey);
-			blobstoreService.delete(audioBlobKey);
-			
-	        System.out.println("Task complete!");
-			
 		}
 		catch (Exception e) {
 			e.printStackTrace();

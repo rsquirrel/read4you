@@ -36,39 +36,41 @@ public class Notification
         Session session = Session.getDefaultInstance(props, null);
 
         try {
-            Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(this.user.getEmail(), 
-            				this.user.getNickname() == null? "User" : this.user.getNickname()));
-            msg.addRecipient(Message.RecipientType.TO, 
-            		new InternetAddress(_to_addr, _to_addr));
-            //msg.addRecipient(Message.RecipientType.CC, new InternetAddress(CCEMAIL, "Shuai Sun"));
-            
-            msg.addRecipient(Message.RecipientType.CC, 
-            		new InternetAddress(CCEMAIL2, "Yan Zou"));
-            msg.setSubject("Someone posted an audio for your uploaed text. Check it out!");
-
-            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-    		String htmlBody = "<p>Hi " + _to_addr + "! </p>\n"
-    					+ "<p>One of our users, " + user.getNickname() + " has upload an audio file for your text on " 
-    					+ dateFormat.format(_date) + ". \n"
-    					+ "Please check it out <b><a href=\"" + link + "\">HERE</a></b>.</p>\n"
-    					+ "<br /><br /><p>Cloud Computing Team 9.</p>";
-    		
-    		System.err.println("DEBUG: {" + htmlBody + "}");
-
-            Multipart mp = new MimeMultipart();
-
-            MimeBodyPart htmlPart = new MimeBodyPart();
-            htmlPart.setContent(htmlBody, "text/html");
-            mp.addBodyPart(htmlPart);
-            
-            msg.setContent(mp);
-            //System.out.println("DEBUG: {" + msg.toString() + "}");
-            
-            Transport.send(msg);
+        	if (user != null) {
+	            Message msg = new MimeMessage(session);
+	            msg.setFrom(new InternetAddress(this.user.getEmail(), 
+	            				this.user.getNickname() == null? "User" : this.user.getNickname()));
+	            msg.addRecipient(Message.RecipientType.TO, 
+	            		new InternetAddress(_to_addr, _to_addr));
+	            //msg.addRecipient(Message.RecipientType.CC, new InternetAddress(CCEMAIL, "Shuai Sun"));
+	            
+	            msg.addRecipient(Message.RecipientType.CC, 
+	            		new InternetAddress(CCEMAIL2, "Yan Zou"));
+	            msg.setSubject("Someone posted an audio for your uploaed text. Check it out!");
+	
+	            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+	    		String htmlBody = "<p>Hi " + _to_addr + "! </p>\n"
+	    					+ "<p>One of our users, " + user.getNickname() + " has upload an audio file for your text on " 
+	    					+ dateFormat.format(_date) + ". \n"
+	    					+ "Please check it out <b><a href=\"" + link + "\">HERE</a></b>.</p>\n"
+	    					+ "<br /><br /><p>Cloud Computing Team 9.</p>";
+	    		
+	    		System.err.println("DEBUG: {" + htmlBody + "}");
+	
+	            Multipart mp = new MimeMultipart();
+	
+	            MimeBodyPart htmlPart = new MimeBodyPart();
+	            htmlPart.setContent(htmlBody, "text/html");
+	            mp.addBodyPart(htmlPart);
+	            
+	            msg.setContent(mp);
+	            //System.out.println("DEBUG: {" + msg.toString() + "}");
+	            
+	            Transport.send(msg);
+        	}
             
             ServletContext context = RequestFactoryServlet.getThreadLocalRequest().getSession().getServletContext();
-            SendMessage.sendMessage(context, _to_addr, htmlBody);
+            SendMessage.sendMessage(context, _to_addr, "Voice added to your file: " + link);
 
         } catch (Exception e) {
         	//System.err.println("Sending Email failure." + e);
