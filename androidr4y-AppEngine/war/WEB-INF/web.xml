@@ -113,15 +113,15 @@
 		<servlet-name>PostWav</servlet-name>
 		<servlet-class>api.PostWavServlet</servlet-class>
 	</servlet>
+  
+	<servlet>
+		<servlet-name>UpWav</servlet-name>
+		<servlet-class>api.UpWavServlet</servlet-class>
+	</servlet>
 	
 	<servlet>
 		<servlet-name>Read</servlet-name>
 		<jsp-file>/read.jsp</jsp-file>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>AssociateInfo</servlet-name>
-		<servlet-class>api.AssociateInfoServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
@@ -172,11 +172,6 @@
 	<servlet-mapping>
 		<servlet-name>Read</servlet-name>
 		<url-pattern>/read</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>AssociateInfo</servlet-name>
-		<url-pattern>/associate</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
