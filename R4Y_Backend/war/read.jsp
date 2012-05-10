@@ -13,6 +13,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="api.CachedQuery" %>
 <%@ page import="api.UtilsClass" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="api.Storage" %>
 
 <%
@@ -70,25 +72,29 @@
 			/******************************************
 			 * Construct the audio file list
 			 ******************************************/
+			 
+			
+			
 			
 			List<Entity> results = fileQuery.getList(limit, offset);
 			wavlist = "";
-	
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 			for (Entity e: results)
 			{
-				wavlist += "<p><a href=\"/serve?bk=" + e.getKey().getName() + "\" type=\"audio/ogg\">" +
-						e.getProperty("usage") + " (by " + e.getProperty("uploader") + ")</a></p>\n";
-						wavlist +="<div class=\"btn-group\">\n"+
-						          "<button class=\"btn\" onClick=\"location.href='/serve?bk="+e.getKey().getName()+ "'\">Play</button>"+
-								  "<button class=\"btn dropdown-toggle\" data-toggle=\"dropdown\">"+
-								  
-								    "<span class=\"caret\"></span>"+
-								  "</button>"+
-								  "<ul class=\"dropdown-menu\">"+
-								    "<li>"+e.getProperty("usage")+"</li>"+
-								    "<li>"+e.getProperty("uploader")+"</li>"+
-								  "</ul>"+
-								"</div>";
+				System.out.println("in read" + e.getProperty("processing"));
+				if (e.getProperty("processing").toString().equalsIgnoreCase("0")) {
+					wavlist += "<p><a href=\"/serve?bk=" + e.getKey().getName() + "\" type=\"audio/ogg\">" +
+							e.getProperty("usage") + " (by " + e.getProperty("uploader") + " " 
+							+ dateFormat.format(e.getProperty("time")) + ")</a></p>\n";
+							
+					wavlist += "<p> :   : <a href=\"/createtask?ak=" + KeyFactory.keyToString(e.getKey()) + "&tbk=" + text_id + "&tsk=volup" + "\">" +
+							"Vol Up</a> :   : <a href=\"/createtask?ak=" + KeyFactory.keyToString(e.getKey()) + "&tbk=" + text_id + "&tsk=voldn" + "\">" +
+							"Vol Down</a> :   : </p>\n";
+							
+				}
+				else {
+					wavlist += "<p>" + e.getProperty("usage") + " (by " + e.getProperty("uploader") + ") Processing...</p>\n";
+				}
 				
 			}
 			wavlist += "<p><a href=\"http://mediaplayer.yahoo.com/example3.mp3\" type=\"audio/ogg\">yahoo</a></p>\n";
