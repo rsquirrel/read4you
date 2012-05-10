@@ -43,19 +43,24 @@ public class Androidr4yService {
 			TextFile tf = new TextFile(
 					KeyFactory.keyToString(fileInfo.getKey()),
 					fileInfo.getKey().getName());
-			
+
 			if (fileInfo.getProperty("filename") == null) {
-				tf.setFilename("");
+				tf.setFilename(" ");
 			} else {
 				tf.setFilename(fileInfo.getProperty("filename").toString());
 			}
+			if (fileInfo.getProperty("owner") == null) {
+				tf.setOwner(" ");
+			} else {
+				tf.setOwner(fileInfo.getProperty("owner").toString());
+			}
 			if (fileInfo.getProperty("category") == null) {
-				tf.setCategory("");
+				tf.setCategory(" ");
 			} else {
 				tf.setCategory(fileInfo.getProperty("category").toString());
 			}
 			if (fileInfo.getProperty("req_type") == null) {
-				tf.setReqType("");
+				tf.setReqType(" ");
 			} else {
 				tf.setReqType(fileInfo.getProperty("req_type").toString());
 			}
@@ -95,19 +100,24 @@ public class Androidr4yService {
 			TextFile tf = new TextFile(
 					KeyFactory.keyToString(fileInfo.getKey()),
 					fileInfo.getKey().getName());
-			
+
 			if (fileInfo.getProperty("filename") == null) {
-				tf.setFilename("");
+				tf.setFilename(" ");
 			} else {
 				tf.setFilename(fileInfo.getProperty("filename").toString());
 			}
+			if (fileInfo.getProperty("owner") == null) {
+				tf.setOwner(" ");
+			} else {
+				tf.setOwner(fileInfo.getProperty("owner").toString());
+			}
 			if (fileInfo.getProperty("category") == null) {
-				tf.setCategory("");
+				tf.setCategory(" ");
 			} else {
 				tf.setCategory(fileInfo.getProperty("category").toString());
 			}
 			if (fileInfo.getProperty("req_type") == null) {
-				tf.setReqType("");
+				tf.setReqType(" ");
 			} else {
 				tf.setReqType(fileInfo.getProperty("req_type").toString());
 			}
@@ -139,12 +149,12 @@ public class Androidr4yService {
 			//int numAudio = audioQuery.getCount();
 			AudioFile af = new AudioFile(fileInfo.getKey().getName());
 			if (fileInfo.getProperty("uploader") == null) {
-				af.setUploader("");
+				af.setUploader(" ");
 			} else {
 				af.setUploader(fileInfo.getProperty("uploader").toString());
 			}
 			if (fileInfo.getProperty("usage") == null) {
-				af.setUsage("");
+				af.setUsage(" ");
 			} else {
 				af.setUsage(fileInfo.getProperty("usage").toString());
 			}

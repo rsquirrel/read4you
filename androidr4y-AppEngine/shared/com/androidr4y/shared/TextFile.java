@@ -73,15 +73,16 @@ public class TextFile {
 	}
 	
 	public String toString() {
-		
-		return (strKey + "\n" +
-				filename + "\n" +
-				blobKey + "\n" +
-				category + "\n" +
-				owner + "\n" +
-				req_type + "\n" +
-				dateFormat.format(time) + "\n" +
-				num_audio);
+		StringBuilder result = new StringBuilder();
+		result.append(strKey + "\n");
+		result.append(filename + "\n");
+		result.append(category + "\n");
+		result.append(owner + "\n");
+		result.append(req_type + "\n");
+		result.append(dateFormat.format(time) + "\n");
+		result.append(num_audio);
+		System.err.println(result.toString());
+		return result.toString();
 	}
 	
 	public void parse(String str) {

@@ -44,10 +44,15 @@ public class AudioFile {
 	}
 	
 	public String toString() {
-		return (blobKey + "\n" +
-				usage + "\n" +
-				uploader + "\n" +
-				dateFormat.format(time));
+		StringBuilder result = new StringBuilder();
+		
+		result.append(blobKey + "\n");
+		result.append(usage + "\n");
+		result.append(uploader + "\n");
+		result.append(dateFormat.format(time));
+		System.err.println(result.toString());
+		
+		return result.toString();
 	}
 	
 	public void parse(String str) {
