@@ -38,6 +38,7 @@ public class DeleteServlet extends HttpServlet {
 			UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();
 			
+			
 			String strKey = req.getParameter("bk");
 	        BlobKey blobKey = new BlobKey(strKey);
     		try {
@@ -66,7 +67,7 @@ public class DeleteServlet extends HttpServlet {
 	        		}
 	        	}
 	        	
-	        	datastore.delete(deleteKeys);
+	        	Storage.delete(deleteKeys);
 	        	
 	        }
 	        

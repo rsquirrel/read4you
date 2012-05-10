@@ -78,12 +78,14 @@ public class WaveServlet extends HttpServlet {
 	    	Key k = KeyFactory.createKey("UserRoot", user.getUserId());
 	    	Entity userRoot;
 	    	try {
-	    		userRoot = datastore.get(k);
+	    		userRoot = Storage.get(k);
+
 	    	} catch (EntityNotFoundException e) {
 	    		userRoot = new Entity(k);
 	    	}
 	    	userRoot.setProperty("last_audio", blobKey.getKeyString());
-	    	datastore.put(userRoot);
+	    	userRoot.setProperty("email", user.getEmail());
+	    	Storage.put(userRoot);
     	}
     }
 }

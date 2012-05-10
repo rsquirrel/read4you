@@ -80,7 +80,7 @@ public class TextFile {
 				category + "\n" +
 				owner + "\n" +
 				req_type + "\n" +
-				dateFormat.format(time) +
+				dateFormat.format(time) + "\n" +
 				num_audio);
 	}
 	
