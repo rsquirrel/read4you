@@ -45,11 +45,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	
 	<servlet>
-		<servlet-name>AssociateInfo</servlet-name>
-		<servlet-class>api.AssociateInfoServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
 		<servlet-name>Wave</servlet-name>
 		<servlet-class>api.WaveServlet</servlet-class>
 	</servlet>
@@ -92,11 +87,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>Read</servlet-name>
 		<url-pattern>/read</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>AssociateInfo</servlet-name>
-		<url-pattern>/associate</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

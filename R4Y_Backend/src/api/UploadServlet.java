@@ -24,6 +24,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -48,12 +49,12 @@ public class UploadServlet extends HttpServlet {
 			if (user != null) {		//record all the file info into user root entity
 				Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
 		    	try {
-		    		datastore.get(rootKey);
+		    		Storage.get(rootKey);
 		    	} catch (EntityNotFoundException e) {
 		    		//create the root entity in case there isn't
 		    		Entity rootEntity = new Entity (rootKey);
 		    		rootEntity.setProperty("email", user.getEmail());
-		    		datastore.put(rootEntity);
+		    		Storage.put(rootEntity);
 		    	}
 				String filename = req.getParameter("file_name");
 				String reqType = req.getParameter("req_type");
@@ -63,7 +64,7 @@ public class UploadServlet extends HttpServlet {
 					try {
 						Key blobinfoKey = KeyFactory.createKey("__BlobInfo__",
 								blobKey.getKeyString());	//get original filename
-						Entity blobInfo = datastore.get(blobinfoKey);
+						Entity blobInfo = Storage.get(blobinfoKey);
 						filename = blobInfo.getProperty("filename").toString();
 						//System.out.println("filename: " + filename);
 					} catch (EntityNotFoundException e) {
@@ -71,14 +72,25 @@ public class UploadServlet extends HttpServlet {
 						//e.printStackTrace();
 					}
 				}
-				//create a new file info entity as a child of the user root
-				Entity fileInfo = new Entity("TextFile", blobKey.getKeyString(), rootKey);
-				fileInfo.setProperty("owner", user.getNickname());
-				fileInfo.setProperty("filename", filename);
-				fileInfo.setProperty("req_type", reqType);
-				fileInfo.setProperty("category", category);
-				fileInfo.setProperty("time", new Date());
-				datastore.put(fileInfo);
+				Transaction txn = datastore.beginTransaction();	// begin a transaction
+				try	
+				{
+					//create a new file info entity as a child of the user root
+					Entity fileInfo = new Entity("TextFile", blobKey.getKeyString(), rootKey);
+					fileInfo.setProperty("owner", user.getNickname());
+					fileInfo.setProperty("filename", filename);
+					fileInfo.setProperty("req_type", reqType);
+					fileInfo.setProperty("category", category);
+					fileInfo.setProperty("time", new Date());
+					Storage.put(fileInfo);
+					txn.commit();
+				} finally
+				{
+					if (txn.isActive()) 
+					{
+				        txn.rollback();
+				    }
+				}
 			}
         }
 		
