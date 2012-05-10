@@ -78,9 +78,20 @@
 			{
 				wavlist += "<p><a href=\"/serve?bk=" + e.getKey().getName() + "\" type=\"audio/ogg\">" +
 						e.getProperty("usage") + " (by " + e.getProperty("uploader") + ")</a></p>\n";
+						wavlist +="<div class=\"btn-group\">\n"+
+						          "<button class=\"btn\" onClick=\"location.href='/serve?bk="+e.getKey().getName()+ "'\">Play</button>"+
+								  "<button class=\"btn dropdown-toggle\" data-toggle=\"dropdown\">"+
+								  
+								    "<span class=\"caret\"></span>"+
+								  "</button>"+
+								  "<ul class=\"dropdown-menu\">"+
+								    "<li>"+e.getProperty("usage")+"</li>"+
+								    "<li>"+e.getProperty("uploader")+"</li>"+
+								  "</ul>"+
+								"</div>";
 				
 			}
-			wavlist += "<p><a href=\"http://mediaplayer.yahoo.com/example3.mp3\">yahoo</a></p>\n";
+			wavlist += "<p><a href=\"http://mediaplayer.yahoo.com/example3.mp3\" type=\"audio/ogg\">yahoo</a></p>\n";
 		} catch (Exception e) {
 			filename = "File name not found";
 			wavlist = "";
