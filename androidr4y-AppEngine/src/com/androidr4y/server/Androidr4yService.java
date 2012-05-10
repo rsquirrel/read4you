@@ -8,6 +8,8 @@ import java.util.List;
 import api.CachedQuery;
 
 import com.androidr4y.annotation.ServiceMethod;
+import com.androidr4y.shared.AudioFile;
+import com.androidr4y.shared.TextFile;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
