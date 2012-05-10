@@ -101,6 +101,7 @@ public class Androidr4yActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // Register a receiver to provide register/unregister notifications
+        //setListAdapter(new ArrayAdapter<String>(this, R.layout.list_files,FRUITS));
         registerReceiver(mUpdateUIReceiver, new IntentFilter(Util.UPDATE_UI_INTENT));
     }
 
@@ -113,7 +114,8 @@ public class Androidr4yActivity extends Activity {
         if (Util.DISCONNECTED.equals(connectionStatus)) {
             startActivity(new Intent(this, AccountsActivity.class));
         }
-      //  setScreenContent(R.layout.hello_world);
+     //   setScreenContent(R.layout.hello_world);
+        //setScreenContent(R.layout.main);
         setMainScreenContent();
     }
 
@@ -138,10 +140,12 @@ public class Androidr4yActivity extends Activity {
     // Manage UI Screens
     private void setMainScreenContent(){
     	setContentView(R.layout.main);
-    	setListAdapter(new ArrayAdapter<String>(this, R.layout.list_files,FRUITS));
+    	//setListAdapter(new ArrayAdapter<String>(this, R.layout.list_files,FRUITS));
     	 
-		ListView listView = getListView();
-		listView.setTextFilterEnabled(true);
+		//ListView listView = getListView();
+    	ListView listView= (ListView) findViewById(R.id.listView1);
+    	listView.setAdapter(new ArrayAdapter<String>(this, R.layout.list_files, FRUITS));
+    	listView.setTextFilterEnabled(true);
  
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
