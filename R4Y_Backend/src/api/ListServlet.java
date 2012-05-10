@@ -88,11 +88,11 @@ public class ListServlet extends HttpServlet {
 			Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
 			/*
 			try {
-				datastore.get(rootKey);
+				Storage.get(rootKey);
 			} catch (EntityNotFoundException e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
-				datastore.put(new Entity(rootKey));
+				Storage.put(new Entity(rootKey));
 			}*/
 			
 			/******************************************

@@ -13,6 +13,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="api.CachedQuery" %>
 <%@ page import="api.UtilsClass" %>
+<%@ page import="api.Storage" %>
 
 <%
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -32,7 +33,7 @@
 		try {
 			textKey = KeyFactory.stringToKey(text_id);
 			Entity textInfo = null;
-			textInfo = datastore.get(textKey);
+			textInfo = Storage.get(textKey);
 		
 			/******************************************
 			 * Construct the list of wav files

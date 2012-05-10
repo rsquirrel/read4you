@@ -62,7 +62,7 @@ public class Notification
             mp.addBodyPart(htmlPart);
             
             msg.setContent(mp);
-            System.out.println("DEBUG: {" + msg.toString() + "}");
+            //System.out.println("DEBUG: {" + msg.toString() + "}");
             
             Transport.send(msg);
 
