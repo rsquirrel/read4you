@@ -31,6 +31,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class UpWavServlet extends HttpServlet {
     private BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
 	private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	private UserService userService = UserServiceFactory.getUserService();
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
@@ -45,7 +46,14 @@ public class UpWavServlet extends HttpServlet {
 			BlobKey audioBlobKey = blobs.get("audio_file").get(0);
 						
 			String usage = req.getParameter("usage");
-			String uploaderID = req.getParameter("uploader");
+			User user = userService.getCurrentUser();
+			String uploaderID;
+			if (user == null) {
+				uploaderID = null;
+			} else {
+				uploaderID = user.getNickname();
+			}
+			//req.getParameter("uploader");
 			
 			Entity audioEntity = new Entity("AudioFile",
 					audioBlobKey.getKeyString(), textKey);
