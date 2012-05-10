@@ -52,12 +52,16 @@ public class UpWavServlet extends HttpServlet {
 			//the third level UserRoot->TextFile->AudioFile
 			audioEntity.setProperty("usage", usage);
 			audioEntity.setProperty("uploader", uploaderID);
+			audioEntity.setProperty("time", new Date());
 			datastore.put(audioEntity);
 
+			//send email for notification
 			try {
 				Notification notice = new Notification();
-				String link = "http://" + req.getServerName() + ":" + req.getServerPort() + "/read?bk=" + textID;
-				String owner_email = (String)datastore.get(datastore.get(textKey).getParent()).getProperty("email");
+				String link = "http://" + req.getServerName() + ":"
+						+ req.getServerPort() + "/read?bk=" + textID;
+				String owner_email = (String)datastore.get(
+						datastore.get(textKey).getParent()).getProperty("email");
 				notice.sendEmail(link, new Date(), owner_email);
 			} catch (EntityNotFoundException e) {
 				// TODO Auto-generated catch block
