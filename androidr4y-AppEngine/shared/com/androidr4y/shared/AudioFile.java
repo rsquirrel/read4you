@@ -56,7 +56,7 @@ public class AudioFile {
 	}
 	
 	public void parse(String str) {
-		String[] strlist = str.split("$\n$");
+		String[] strlist = str.split("\\$\n\\$");
 		blobKey = strlist[0];
 		usage = strlist[1];
 		uploader = strlist[2];

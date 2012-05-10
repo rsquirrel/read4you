@@ -76,6 +76,7 @@ public class TextFile {
 		StringBuilder result = new StringBuilder();
 		result.append(strKey + "$\n$");
 		result.append(filename + "$\n$");
+		result.append(blobKey + "$\n$");
 		result.append(category + "$\n$");
 		result.append(owner + "$\n$");
 		result.append(req_type + "$\n$");
@@ -86,7 +87,7 @@ public class TextFile {
 	}
 	
 	public void parse(String str) {
-		String[] strlist = str.split("$\n$");
+		String[] strlist = str.split("\\$\n\\$");
 		strKey = strlist[0];
 		filename = strlist[1];
 		blobKey = strlist[2];
