@@ -14,13 +14,14 @@
  *******************************************************************************/
 package com.androidr4y.client;
 
+import java.util.List;
+
 import com.google.web.bindery.requestfactory.shared.InstanceRequest;
 import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.RequestFactory;
 import com.google.web.bindery.requestfactory.shared.ServiceName;
 
-import com.androidr4y.shared.Androidr4yRequest;
 import com.androidr4y.shared.MessageProxy;
 import com.androidr4y.shared.RegistrationInfoProxy;
 
@@ -53,6 +54,11 @@ public interface MyRequestFactory extends RequestFactory {
 		 * Send a message to a device using C2DM.
 		 */
 		InstanceRequest<MessageProxy, String> send();
+	}
+	
+	@ServiceName(value = "com.androidr4y.server.Androidr4yService", locator = "com.androidr4y.server.Androidr4yServiceLocator")
+	public interface Androidr4yRequest extends RequestContext {
+		Request<List<String>> getFileList();
 	}
 
 	HelloWorldRequest helloWorldRequest();

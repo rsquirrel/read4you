@@ -24,7 +24,6 @@ public class Androidr4yService {
 	//private BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
 	private UserService userService = UserServiceFactory.getUserService();
 	
-	
 	@ServiceMethod
 	public List<String> getFileList() {
 		ArrayList<String> result = new ArrayList<String>();
