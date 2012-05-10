@@ -67,6 +67,7 @@ public class PostWavServlet extends HttpServlet {
 							//the third level UserRoot->TextFile->AudioFile
 							audioEntity.setProperty("usage", usage);
 							audioEntity.setProperty("uploader", uploaderID);
+							audioEntity.setProperty("time", new Date());
 							datastore.put(audioEntity);
 							
 							Notification notice = new Notification();

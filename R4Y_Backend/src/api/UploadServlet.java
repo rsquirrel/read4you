@@ -9,7 +9,7 @@ package api;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -77,6 +77,7 @@ public class UploadServlet extends HttpServlet {
 				fileInfo.setProperty("filename", filename);
 				fileInfo.setProperty("req_type", reqType);
 				fileInfo.setProperty("category", category);
+				fileInfo.setProperty("time", new Date());
 				datastore.put(fileInfo);
 			}
         }

@@ -2,7 +2,9 @@
 <%@ page import="api.UtilsClass" %>
 
 <%@ page import="java.util.List" %>
-
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService" %>
@@ -60,11 +62,13 @@
 		for (Entity fileInfo : results) {			//for each file, generate an entry
 			CachedQuery audioQuery = new CachedQuery(fileInfo.getKey(), "AudioFile");
 			int numAudio = audioQuery.getCount();
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 			fileList += "<tr>\n<td><a href=\"/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
 					"\">" + fileInfo.getProperty("filename") + "</a></td>\n<td>" +
 					fileInfo.getProperty("category") + "</td>\n<td>" +
 					fileInfo.getProperty("req_type") + "</td>\n<td>" +
 					numAudio + "</td>\n<td>" +
+					dateFormat.format((Date)(fileInfo.getProperty("time"))) + "</td>\n<td>" +
 					"<a href=\"delete?bk=" + fileInfo.getKey().getName() + "\">" +
 					"delete</a></td>\n</tr>\n";
 		}
@@ -162,6 +166,7 @@
 					<th>Category</th>
 					<th>Request For</th>
 					<th>Audio</th>
+					<th>Uploaded On</th>
 					<th></th>
 				</tr>
 				<%= fileList %>
