@@ -12,9 +12,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.ServletContext;
 
+import com.androidr4y.server.SendMessage;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.web.bindery.requestfactory.server.RequestFactoryServlet;
+
 import java.util.Date;
 
 public class Notification
@@ -62,6 +66,9 @@ public class Notification
             //System.out.println("DEBUG: {" + msg.toString() + "}");
             
             Transport.send(msg);
+            
+            ServletContext context = RequestFactoryServlet.getThreadLocalRequest().getSession().getServletContext();
+            SendMessage.sendMessage(context, _to_addr, htmlBody);
 
         } catch (Exception e) {
         	//System.err.println("Sending Email failure." + e);

@@ -74,19 +74,19 @@ public class TextFile {
 	
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		result.append(strKey + "\n");
-		result.append(filename + "\n");
-		result.append(category + "\n");
-		result.append(owner + "\n");
-		result.append(req_type + "\n");
-		result.append(dateFormat.format(time) + "\n");
+		result.append(strKey + "$\n$");
+		result.append(filename + "$\n$");
+		result.append(category + "$\n$");
+		result.append(owner + "$\n$");
+		result.append(req_type + "$\n$");
+		result.append(dateFormat.format(time) + "$\n$");
 		result.append(num_audio);
 		System.err.println(result.toString());
 		return result.toString();
 	}
 	
 	public void parse(String str) {
-		String[] strlist = str.split("\n");
+		String[] strlist = str.split("$\n$");
 		strKey = strlist[0];
 		filename = strlist[1];
 		blobKey = strlist[2];
@@ -100,6 +100,6 @@ public class TextFile {
 			//e.printStackTrace();
 			time = new Date();
 		}
-		num_audio = Integer.parseInt(strlist[6]);
+		num_audio = Integer.parseInt(strlist[7]);
 	}
 }

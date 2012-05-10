@@ -46,9 +46,9 @@ public class AudioFile {
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 		
-		result.append(blobKey + "\n");
-		result.append(usage + "\n");
-		result.append(uploader + "\n");
+		result.append(blobKey + "$\n$");
+		result.append(usage + "$\n$");
+		result.append(uploader + "$\n$");
 		result.append(dateFormat.format(time));
 		System.err.println(result.toString());
 		
@@ -56,7 +56,7 @@ public class AudioFile {
 	}
 	
 	public void parse(String str) {
-		String[] strlist = str.split("\n");
+		String[] strlist = str.split("$\n$");
 		blobKey = strlist[0];
 		usage = strlist[1];
 		uploader = strlist[2];
