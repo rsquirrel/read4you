@@ -222,7 +222,7 @@
 										<input type="hidden" name="text_file" value="<%=
 											(textKey != null)?KeyFactory.keyToString(textKey):"null" %>" />
 										<input type="hidden" name="uploader" value="<%= user.getNickname() %>" />
-										<button type="submit" class="btn btn-primary">Submit</button>
+										<button id="submit" type="submit" class="btn btn-primary">Submit</button>
 									</td>
 								</tr>
 							</table>
