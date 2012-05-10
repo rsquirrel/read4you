@@ -1,10 +1,12 @@
-package com.androidr4y.server;
+package com.androidr4y.shared;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AudioFile {
+	private static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
 	private String blobKey;	//the corresponding blob key
 	
@@ -42,10 +44,23 @@ public class AudioFile {
 	}
 	
 	public String toString() {
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		return (blobKey + "\n" +
 				usage + "\n" +
 				uploader + "\n" +
 				dateFormat.format(time));
+	}
+	
+	public void parse(String str) {
+		String[] strlist = str.split("\n");
+		blobKey = strlist[0];
+		usage = strlist[1];
+		uploader = strlist[2];
+		try {
+			time = dateFormat.parse(strlist[3]);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			time = new Date();
+		}
 	}
 }
