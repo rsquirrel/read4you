@@ -20,43 +20,47 @@ import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.RequestFactory;
 import com.google.web.bindery.requestfactory.shared.ServiceName;
 
+import com.androidr4y.shared.Androidr4yRequest;
 import com.androidr4y.shared.MessageProxy;
 import com.androidr4y.shared.RegistrationInfoProxy;
 
 public interface MyRequestFactory extends RequestFactory {
 
-  @ServiceName("com.androidr4y.server.HelloWorldService")
-  public interface HelloWorldRequest extends RequestContext {
-    /**
-     * Retrieve a "Hello, World" message from the server.
-     */
-    Request<String> getMessage();
-  }
+	@ServiceName("com.androidr4y.server.HelloWorldService")
+	public interface HelloWorldRequest extends RequestContext {
+		/**
+		 * Retrieve a "Hello, World" message from the server.
+		 */
+		Request<String> getMessage();
+	}
 
-  @ServiceName("com.androidr4y.server.RegistrationInfo")
-  public interface RegistrationInfoRequest extends RequestContext {
-    /**
-     * Register a device for C2DM messages.
-     */
-    InstanceRequest<RegistrationInfoProxy, Void> register();
+	@ServiceName("com.androidr4y.server.RegistrationInfo")
+	public interface RegistrationInfoRequest extends RequestContext {
+		/**
+		 * Register a device for C2DM messages.
+		 */
+		InstanceRequest<RegistrationInfoProxy, Void> register();
 
-    /**
-     * Unregister a device for C2DM messages.
-     */
-    InstanceRequest<RegistrationInfoProxy, Void> unregister();
-  }
+		/**
+		 * Unregister a device for C2DM messages.
+		 */
+		InstanceRequest<RegistrationInfoProxy, Void> unregister();
+	}
 
-  @ServiceName("com.androidr4y.server.Message")
-  public interface MessageRequest extends RequestContext {
-    /**
-     * Send a message to a device using C2DM.
-     */
-    InstanceRequest<MessageProxy, String> send();
-  }
+	@ServiceName("com.androidr4y.server.Message")
+	public interface MessageRequest extends RequestContext {
+		/**
+		 * Send a message to a device using C2DM.
+		 */
+		InstanceRequest<MessageProxy, String> send();
+	}
 
-  HelloWorldRequest helloWorldRequest();
+	HelloWorldRequest helloWorldRequest();
 
-  RegistrationInfoRequest registrationInfoRequest();
+	RegistrationInfoRequest registrationInfoRequest();
 
-  MessageRequest messageRequest();
+	MessageRequest messageRequest();
+
+	Androidr4yRequest androidr4yRequest();
+
 }
