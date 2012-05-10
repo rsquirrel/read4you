@@ -84,8 +84,7 @@
 				System.out.println("in read" + e.getProperty("processing"));
 				if (e.getProperty("processing").toString().equalsIgnoreCase("0")) {
 					wavlist += "<p><a href=\"/serve?bk=" + e.getKey().getName() + "\" type=\"audio/ogg\">" +
-							e.getProperty("usage") + " (by " + e.getProperty("uploader") + " " 
-							+ dateFormat.format(e.getProperty("time")) + ")</a></p>\n";
+							e.getProperty("usage") + " (by " + e.getProperty("uploader") + ")</a></p>\n";
 							
 					wavlist += "<p> :   : <a href=\"/createtask?ak=" + KeyFactory.keyToString(e.getKey()) + "&tbk=" + text_id + "&tsk=volup" + "\">" +
 							"Vol Up</a> :   : <a href=\"/createtask?ak=" + KeyFactory.keyToString(e.getKey()) + "&tbk=" + text_id + "&tsk=voldn" + "\">" +
