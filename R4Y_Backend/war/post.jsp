@@ -13,6 +13,10 @@ Text file upload page
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	UserService userService = UserServiceFactory.getUserService();
 	User user = userService.getCurrentUser();
+	if (user == null)
+	{
+		response.sendRedirect(userService.createLoginURL(request.getRequestURL().toString()));
+	}
 %>
 
 <html>

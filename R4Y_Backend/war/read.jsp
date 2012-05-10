@@ -30,7 +30,14 @@
 	String navBar = "";
 	
 	Key textKey = null;
-	if (user != null && text_id != null)
+	if (user == null)
+	{
+		String back_url = request.getRequestURL().toString();
+		if (text_id != null)
+			back_url += ("?bk=" + text_id);
+		response.sendRedirect(userService.createLoginURL(back_url));
+	}
+	else if (text_id != null)
 	{
 		try {
 			textKey = KeyFactory.stringToKey(text_id);
@@ -72,9 +79,6 @@
 			/******************************************
 			 * Construct the audio file list
 			 ******************************************/
-			 
-			
-			
 			
 			List<Entity> results = fileQuery.getList(limit, offset);
 			wavlist = "";
@@ -96,7 +100,7 @@
 				}
 				
 			}
-			wavlist += "<p><a href=\"http://mediaplayer.yahoo.com/example3.mp3\" type=\"audio/ogg\">yahoo</a></p>\n";
+			//wavlist += "<p><a href=\"http://mediaplayer.yahoo.com/example3.mp3\" type=\"audio/ogg\">yahoo</a></p>\n";
 		} catch (Exception e) {
 			filename = "File name not found";
 			wavlist = "";
@@ -260,6 +264,12 @@
     
 
 </div>
+<script type="text/javascript">
+    var YWPParams = 
+    {
+        autoadvance: false
+    };
+</script>
 <script type="text/javascript" src="http://webplayer.yahooapis.com/player.js"></script> 
 
 </body>

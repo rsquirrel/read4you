@@ -46,7 +46,7 @@ public class AudioProcessingServlet extends HttpServlet {
 			
 			Key akey = KeyFactory.stringToKey(ak);
 
-			Entity aentity = datastore.get(akey);
+			Entity aentity = Storage.get(akey);
 
 			
 			String lenString = aentity.getProperty("length").toString();
@@ -148,9 +148,9 @@ public class AudioProcessingServlet extends HttpServlet {
 			audioEntity.setProperty("time", new Date());
 			audioEntity.setProperty("length", lenString);
 			audioEntity.setUnindexedProperty("processing", "0");
-			datastore.put(audioEntity);
+			Storage.put(audioEntity);
 			
-			datastore.delete(akey);
+			Storage.delete(akey);
 			blobstoreService.delete(audioBlobKey);
 			
 	        System.out.println("Task complete!");

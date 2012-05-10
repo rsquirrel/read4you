@@ -26,9 +26,9 @@ public class TaskCreaterServlet extends HttpServlet {
 	    throws IOException {
 			
 			try {
-				Entity en = datastore.get(KeyFactory.stringToKey(req.getParameter("ak")));
+				Entity en = Storage.get(KeyFactory.stringToKey(req.getParameter("ak")));
 				en.setUnindexedProperty("processing", "1");
-				datastore.put(en);
+				Storage.put(en);
 				System.out.println("Set to 1");
 			} catch (EntityNotFoundException e) {
 				resp.sendRedirect("/read?bk=" + req.getParameter("tbk"));

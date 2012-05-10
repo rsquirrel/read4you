@@ -7,6 +7,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceException;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -19,6 +20,15 @@ public class Storage
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		
 		datastore.put(_entity);
+		memcache.put(_entity.getKey(), _entity);
+	}
+	
+	static public void put(Transaction _tx, Entity _entity)
+	{
+		MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		
+		datastore.put(_tx, _entity);
 		memcache.put(_entity.getKey(), _entity);
 	}
 	

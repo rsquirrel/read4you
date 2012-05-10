@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.datastore.TransactionOptions;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -42,6 +43,8 @@ public class PostWavServlet extends HttpServlet
 			{
 				Key textKey = KeyFactory.stringToKey(textID);
 
+				Key owner_key = textKey.getParent();
+				
 				User user = userService.getCurrentUser();
 				if (user != null)
 				{ // only allow when user logs in
@@ -59,18 +62,20 @@ public class PostWavServlet extends HttpServlet
 						rootEntity.setProperty("email", user.getEmail());
 						Storage.put(rootEntity);
 					}
-						Object t = rootEntity.getProperty("last_audio");
-						Object t2 = rootEntity.getProperty("last_audio_len");
+					Object t = rootEntity.getProperty("last_audio");
+					Object t2 = rootEntity.getProperty("last_audio_len");
 					if (t != null)
 					{ // there is an audio file recorded
-						Transaction txn = datastore.beginTransaction();	// begin a transaction
-						try	
+						Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true)); // begin
+																		// a
+																		// transaction
+						try
 						{
 							String audioBlobKey = t.toString();
 
 							rootEntity.setProperty("last_audio", null);
 							rootEntity.setProperty("last_audio_len", null);
-							Storage.put(rootEntity);
+							Storage.put(txn, rootEntity);
 
 							String usage = req.getParameter("usage");
 							String uploaderID = req.getParameter("uploader");
@@ -88,7 +93,7 @@ public class PostWavServlet extends HttpServlet
 							audioEntity.setProperty("time", new Date());
 							audioEntity.setProperty("length", t2);
 							audioEntity.setUnindexedProperty("processing", "0");
-							Storage.put(audioEntity);
+							Storage.put(txn, audioEntity);
 
 							Notification notice = new Notification();
 							String link = "http://" + req.getServerName() + ":"
@@ -98,14 +103,14 @@ public class PostWavServlet extends HttpServlet
 									Storage.get(textKey).getParent())
 									.getProperty("email");
 							notice.sendEmail(link, new Date(), owner_email);
-							
+
 							txn.commit();
 						} finally
 						{
-							if (txn.isActive()) 
+							if (txn.isActive())
 							{
-						        txn.rollback();
-						    }
+								txn.rollback();
+							}
 						}
 
 						// resp.sendRedirect("/serve?bk=" + audioBlobKey);
@@ -118,10 +123,10 @@ public class PostWavServlet extends HttpServlet
 
 			} catch (IllegalArgumentException e)
 			{
-				System.err.println("text file ID is null");
+				e.printStackTrace(System.err);
 			} catch (EntityNotFoundException e)
 			{
-				System.err.println("user root or text entity not found: ");
+				e.printStackTrace(System.err);
 			}
 		} else
 		{
