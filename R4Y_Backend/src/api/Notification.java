@@ -13,17 +13,14 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import java.util.Date;
 
 public class Notification
 {
 	private User user = UserServiceFactory.getUserService().getCurrentUser();
-	private static String CCEMAIL = "marksun1988@gmail.com";	// CC' to my email
+	//private static String CCEMAIL = "marksun1988@gmail.com";	// CC' to my email
 	private static String CCEMAIL2 = "probas.322@gmail.com";	// CC' to Yan Zou's email
 
 	public Notification()
@@ -40,8 +37,7 @@ public class Notification
             				this.user.getNickname() == null? "User" : this.user.getNickname()));
             msg.addRecipient(Message.RecipientType.TO, 
             		new InternetAddress(_to_addr, _to_addr));
-            msg.addRecipient(Message.RecipientType.CC, 
-            		new InternetAddress(CCEMAIL, "Shuai Sun"));
+            //msg.addRecipient(Message.RecipientType.CC, new InternetAddress(CCEMAIL, "Shuai Sun"));
             
             msg.addRecipient(Message.RecipientType.CC, 
             		new InternetAddress(CCEMAIL2, "Yan Zou"));
@@ -51,9 +47,10 @@ public class Notification
     		String htmlBody = "<p>Hi " + _to_addr + "! </p>\n"
     					+ "<p>One of our users, " + user.getNickname() + " has upload an audio file for your text on " 
     					+ dateFormat.format(_date) + ". \n"
-    					+ "Please check it out <b><a href=\"" + link + "\">HERE</a></b></p>\n";
+    					+ "Please check it out <b><a href=\"" + link + "\">HERE</a></b>.</p>\n"
+    					+ "<br /><br /><p>Cloud Computing Team 9.</p>";
     		
-    		System.out.println("DEBUG: {" + htmlBody + "}");
+    		System.err.println("DEBUG: {" + htmlBody + "}");
 
             Multipart mp = new MimeMultipart();
 
@@ -67,8 +64,8 @@ public class Notification
             Transport.send(msg);
 
         } catch (Exception e) {
-        	System.out.println("Sending Email failure.");
-        	e.printStackTrace();
+        	//System.err.println("Sending Email failure." + e);
+        	e.printStackTrace(System.err);
         }
 	}
 }

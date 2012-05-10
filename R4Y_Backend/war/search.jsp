@@ -56,7 +56,7 @@
 		 * Query the files according to the search conditions
 		 ******************************************/
 
-		Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
+		//Key rootKey = KeyFactory.createKey("UserRoot", user.getUserId());
 		HashMap<String, String> filter = new HashMap<String, String>();
 		filter.put("owner", owner);
 		filter.put("filename", filename);
@@ -94,8 +94,8 @@
 			int numAudio = audioQuery.getCount();
 			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 			fileList += "<tr>\n<td>" + fileInfo.getProperty("owner") + "</td>\n<td>" +
-					"<button class=\"btn btn-primary \" onClick=\"location.href='/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
-					"'\">" + fileInfo.getProperty("filename") + "</button></td>\n<td>" +
+					"<a href='/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
+					"'\">" + fileInfo.getProperty("filename") + "</a></td>\n<td>" +
 					fileInfo.getProperty("category") + "</td>\n<td>" +
 					fileInfo.getProperty("req_type") + "</td>\n<td>" +
 					numAudio + "</td>\n<td>" +

@@ -84,6 +84,7 @@ public class WaveServlet extends HttpServlet {
 	    		userRoot = new Entity(k);
 	    	}
 	    	userRoot.setProperty("last_audio", blobKey.getKeyString());
+	    	userRoot.setProperty("email", user.getEmail());
 	    	Storage.put(userRoot);
     	}
     }
