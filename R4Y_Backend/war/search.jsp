@@ -46,8 +46,12 @@
 	String select_explain = ((req_type.compareTo("Explain") == 0) ? "selected" : "");
 	String select_translate = ((req_type.compareTo("Translate") == 0) ? "selected" : "");
 
-	if (user != null) {
-
+	if (user == null)
+	{
+		response.sendRedirect(userService.createLoginURL(request.getRequestURL().toString()));
+	}
+	else 
+	{
 		int limit = 5;
 		page_num = UtilsClass.convertPageNum(request.getParameter("page"));
 		int offset = (page_num - 1) * limit;
