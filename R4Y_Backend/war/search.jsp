@@ -94,8 +94,8 @@
 			int numAudio = audioQuery.getCount();
 			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 			fileList += "<tr>\n<td>" + fileInfo.getProperty("owner") + "</td>\n<td>" +
-					"<a href=\"/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) + "\">" +
-					fileInfo.getProperty("filename") + "</a></td>\n<td>" +
+					"<button class=\"btn btn-primary \" onClick=\"location.href='/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
+					"'\">" + fileInfo.getProperty("filename") + "</button></td>\n<td>" +
 					fileInfo.getProperty("category") + "</td>\n<td>" +
 					fileInfo.getProperty("req_type") + "</td>\n<td>" +
 					numAudio + "</td>\n<td>" +
@@ -199,13 +199,13 @@
     			<input type="hidden" name="req_type" value="<%= req_type %>" />
     		</form>
     		<form action="/search" method="get">
-				<table  class="table table-striped">
-					<col width=150><col width=150><col width=125><col width=125><col width=50>
+				<table  class="table table-striped span8" >
+					<col width=150><col width=120><col width=100><col width=125><col width=70><col width=150>
 					<tr style="text-align:left">
 						<th>Owner</th>
 						<th>File Name</th>
 						<th>Category</th>
-						<th>Request</th>
+						<th>Purpose</th>
 						<th>Audio</th>
 						<th>Uploaded On</th>
 						<th></th>
@@ -215,7 +215,7 @@
 						<td><input type="text" class="input-small" name="filename" value=<%= filename %>></td>
 						<td><input type="text" class="input-small" name="category" value=<%= category %>></td>
 						<td>
-							<select name="req_type" class="span1">
+							<select name="req_type" class="span2">
 								<option <%= select_blank %>></option>
 								<option <%= select_read %>>Read</option>
 								<option <%= select_comment %>>Comment</option>
@@ -223,7 +223,7 @@
 								<option <%= select_translate %>>Translate</option>
 							</select>
 						</td>
-						<td><input type="checkbox" class="span2"></td>
+						<td></td>
 						<td></td>
 						<td><button type="submit" class="btn btn-primary">Search</button></td>
 					</tr>

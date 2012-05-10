@@ -63,14 +63,14 @@
 			CachedQuery audioQuery = new CachedQuery(fileInfo.getKey(), "AudioFile");
 			int numAudio = audioQuery.getCount();
 			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-			fileList += "<tr>\n<td><a href=\"/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
-					"\">" + fileInfo.getProperty("filename") + "</a></td>\n<td>" +
+			fileList += "<tr>\n<td><button class=\"btn btn-primary \" onClick=\"location.href='/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
+					"'\">" + fileInfo.getProperty("filename") + "</button></td>\n<td>" +
 					fileInfo.getProperty("category") + "</td>\n<td>" +
 					fileInfo.getProperty("req_type") + "</td>\n<td>" +
 					numAudio + "</td>\n<td>" +
 					dateFormat.format((Date)(fileInfo.getProperty("time"))) + "</td>\n<td>" +
-					"<a href=\"delete?bk=" + fileInfo.getKey().getName() + "\">" +
-					"delete</a></td>\n</tr>\n";
+					"<button class=\"btn btn-danger\" onClick=\"location.href='delete?bk=" + fileInfo.getKey().getName() + "'\">" +
+					"delete</button></td>\n</tr>\n";
 		}
 	}
 %>
@@ -160,11 +160,11 @@
 <div class="span8 offset2">
 <form class="well span4 offset1" action="/list" method="get"><%= navBar %></form>
 			<table  class="table table-striped">
-				<col width=200><col width=150><col width=150><col width=50><col width=50>
+				<col width=120><col width=120><col width=120><col width=110><col width=150>
 				<tr style="text-align:center">
 					<th>File Name</th>
 					<th>Category</th>
-					<th>Request For</th>
+					<th>Purpose</th>
 					<th>Audio</th>
 					<th>Uploaded On</th>
 					<th></th>
