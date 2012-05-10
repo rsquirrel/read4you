@@ -1,6 +1,5 @@
 <%@ page import="api.CachedQuery" %>
 <%@ page import="api.UtilsClass" %>
-
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.DateFormat" %>
@@ -63,8 +62,8 @@
 			CachedQuery audioQuery = new CachedQuery(fileInfo.getKey(), "AudioFile");
 			int numAudio = audioQuery.getCount();
 			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-			fileList += "<tr>\n<td><button class=\"btn btn-primary \" onClick=\"location.href='/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
-					"'\">" + fileInfo.getProperty("filename") + "</button></td>\n<td>" +
+			fileList += "<tr>\n<td><a href='/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) +
+					"'\">" + fileInfo.getProperty("filename") + "</a></td>\n<td>" +
 					fileInfo.getProperty("category") + "</td>\n<td>" +
 					fileInfo.getProperty("req_type") + "</td>\n<td>" +
 					numAudio + "</td>\n<td>" +
@@ -79,7 +78,7 @@
 <html lang="en">
     <head>
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
