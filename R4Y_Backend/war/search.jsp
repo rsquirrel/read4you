@@ -3,7 +3,9 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.HashMap" %>
-
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService" %>
@@ -90,12 +92,14 @@
 		for (Entity fileInfo : results) {			//for each file, generate an entry
 			CachedQuery audioQuery = new CachedQuery(fileInfo.getKey(), "AudioFile");
 			int numAudio = audioQuery.getCount();
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 			fileList += "<tr>\n<td>" + fileInfo.getProperty("owner") + "</td>\n<td>" +
 					"<a href=\"/read?bk=" + KeyFactory.keyToString(fileInfo.getKey()) + "\">" +
 					fileInfo.getProperty("filename") + "</a></td>\n<td>" +
 					fileInfo.getProperty("category") + "</td>\n<td>" +
 					fileInfo.getProperty("req_type") + "</td>\n<td>" +
-					numAudio + "</td>\n</tr>\n";
+					numAudio + "</td>\n<td>" +
+					dateFormat.format((Date)fileInfo.getProperty("time")) + "</td>\n<td></td></tr>";
 		}
 	}
 %>
@@ -194,8 +198,8 @@
     			<input type="hidden" name="category" value="<%= category %>" />
     			<input type="hidden" name="req_type" value="<%= req_type %>" />
     		</form>
-    		<form class="well span8" action="/search" method="get">
-				<table>
+    		<form action="/search" method="get">
+				<table  class="table table-striped">
 					<col width=150><col width=150><col width=125><col width=125><col width=50>
 					<tr style="text-align:left">
 						<th>Owner</th>
@@ -203,6 +207,8 @@
 						<th>Category</th>
 						<th>Request</th>
 						<th>Audio</th>
+						<th>Uploaded On</th>
+						<th></th>
 					</tr>
 					<tr style="text-align:left">
 						<td><input type="text" class="input-small" name="owner" value=<%= owner %>></td>
@@ -218,6 +224,7 @@
 							</select>
 						</td>
 						<td><input type="checkbox" class="span2"></td>
+						<td></td>
 						<td><button type="submit" class="btn btn-primary">Search</button></td>
 					</tr>
 					<%= fileList %>

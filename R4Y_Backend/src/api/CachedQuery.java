@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.Query;
 //import com.google.appengine.api.memcache.MemcacheService;
 //import com.google.appengine.api.memcache.MemcacheServiceException;
 //import com.google.appengine.api.memcache.MemcacheServiceFactory;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 public class CachedQuery {
     
@@ -38,6 +39,7 @@ public class CachedQuery {
 			*/
 			Query fileQuery = new Query(className);	//TextFile or AudioFile
 			fileQuery.setAncestor(rootKey);
+			fileQuery.addSort("time", SortDirection.DESCENDING);
 			
 			pq = datastore.prepare(fileQuery);
 			/*
@@ -82,11 +84,13 @@ public class CachedQuery {
 			if (category.compareTo("") != 0) {	//if empty, not adding this filter
 				fileQuery.addFilter("category", Query.FilterOperator.GREATER_THAN_OR_EQUAL, category);
 				fileQuery.addFilter("category", Query.FilterOperator.LESS_THAN, category + (char)255);
+				fileQuery.addSort("category", SortDirection.DESCENDING);
 			}
 			if (req_type.compareTo("") != 0) {	//if empty, not adding this filter
 				fileQuery.addFilter("req_type", Query.FilterOperator.EQUAL, req_type);
 			}
 			
+			fileQuery.addSort("time", SortDirection.DESCENDING);
 			pq = datastore.prepare(fileQuery);/*
 			try {
 				memcache.put(cacheKey, pq);
